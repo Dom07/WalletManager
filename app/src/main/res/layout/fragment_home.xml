@@ -4,10 +4,73 @@
     android:layout_height="match_parent"
     tools:context="com.dom5230.utility.walletmanager.Home">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/rlContainer"
         android:layout_height="match_parent"
-        android:text="Home" />
+        android:layout_width="match_parent"
+         >
 
+        <RelativeLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:id="@+id/llInformation"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/tvLabelBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Balance : "
+                android:textSize="20sp"
+                android:textColor="@color/colorWhite"/>
+
+            <TextView
+                android:id="@+id/tvBalance"
+                android:text="Rs.2000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/colorWhite"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/llInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <Button
+                android:id="@+id/btnCredit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:layout_marginRight="5dp"/>
+
+            <Button
+                android:id="@+id/btnDebit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove"
+                android:layout_marginLeft="5dp"
+                />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Enter Amount"
+                android:id="@+id/etAmount" />
+        </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
 </FrameLayout>
