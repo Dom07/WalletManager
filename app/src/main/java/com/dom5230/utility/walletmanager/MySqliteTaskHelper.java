@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by root on 7/3/18.
@@ -15,6 +16,8 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
 
     private static MySqliteTaskHelper sqliteTaskHelperInstance = null;
     private SQLiteDatabase db;
+    private final String CREDIT = "CREDIT";
+    private final String DEBIT = "DEBIT";
 
     public MySqliteTaskHelper(Context context) {
         super(context, "transaction.db",null,1);
@@ -38,20 +41,67 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void onCredit(Float money, Context context){
-        if(checkIfRowExists(context)==0){
-            firstCredit(context, money);
-        }else {
-            float currentBalance = getCurrentBalance(context);
-            currentBalance+=money;
-            sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
-            db = sqliteTaskHelperInstance.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("BALANCE", currentBalance);
-            db.update("MAIN_BALANCE", values, "NAME ='TOTAL'", null);
-            close(db, sqliteTaskHelperInstance);
+    public void processTransaction(String transactionMode, float amount, Context context){
+        float currentBalance = getCurrentBalance(context);
+        Log.d("SQL","CurrentBalance : Rs."+currentBalance);
+        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+        db = sqliteTaskHelperInstance.getWritableDatabase();
+        if(transactionMode.equals(CREDIT)){
+            currentBalance+=amount;
+            Log.d("SQL","After Credit, CurrentBalance : Rs."+currentBalance);
+        }else{
+            currentBalance-=amount;
+            Log.d("SQL","After Debit, CurrentBalance : Rs."+currentBalance);
+        }
+        ContentValues values = new ContentValues();
+        values.put("BALANCE", currentBalance);
+        db.update("MAIN_BALANCE", values, "NAME ='TOTAL'", null);
+        close(db, sqliteTaskHelperInstance);
+    }
+
+//    public void onCredit(Float amount, Context context){
+//        if(checkIfRowExists(context)==0){
+//            firstCredit(context, amount);
+//        }else {
+//            float currentBalance = getCurrentBalance(context);
+//            currentBalance+=amount;
+//            sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+//            db = sqliteTaskHelperInstance.getWritableDatabase();
+//            ContentValues values = new ContentValues();
+//            values.put("BALANCE", currentBalance);
+//            db.update("MAIN_BALANCE", values, "NAME ='TOTAL'", null);
+//            close(db, sqliteTaskHelperInstance);
+//        }
+//    }
+//
+//    public void onDebit(Float amount, Context context){
+//        if(checkIfRowExists(context)==0){
+//            Toast.makeText(context,"Nothing to Debit",Toast.LENGTH_SHORT).show();
+//        }else{
+//            float currentBalance = getCurrentBalance(context);
+//            currentBalance-=amount;
+//            sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+//
+//        }
+//    }
+
+    public void onTransaction(Float amount, Context context,String transactionMode){
+        if(transactionMode.equals(CREDIT)){
+            if(checkIfRowExists(context)==0)
+                firstCredit(context, amount);
+            else{
+                processTransaction(transactionMode, amount, context);
+            }
+        }
+        else if(transactionMode.equals(DEBIT)){
+            if(checkIfRowExists(context)==0)
+                Toast.makeText(context,"Nothing to Debit",Toast.LENGTH_SHORT).show();
+            else{
+                processTransaction(transactionMode, amount, context);
+            }
         }
     }
+
 
     public void firstCredit(Context context, float amount){
         if(checkIfRowExists(context) == 0) {

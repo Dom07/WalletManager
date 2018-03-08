@@ -53,21 +53,21 @@
                 android:id="@+id/btnCredit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:text="Add" />
 
             <Button
                 android:id="@+id/btnDebit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remove"
                 android:layout_marginLeft="5dp"
-                />
+                android:text="Remove" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Enter Amount"
+                android:inputType="number"
                 android:id="@+id/etAmount" />
         </LinearLayout>
         </RelativeLayout>

@@ -15,24 +15,39 @@ public class Home extends Fragment {
 
     public Context context = getContext();
     public final MySqliteTaskHelper helper = new MySqliteTaskHelper(context);
+    private final String CREDIT = "CREDIT", DEBIT = "DEBIT";
+
+    private TextView tvBalance;
+    private Button btnCredit;
+    private Button btnDebit;
+    private EditText etAmount;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        boolean flag = false;
-        final TextView tvBalance = (TextView)view.findViewById(R.id.tvBalance);
-        Button btnCredit = (Button)view.findViewById(R.id.btnCredit);
-        final EditText etAmount = (EditText)view.findViewById(R.id.etAmount);
+        tvBalance = view.findViewById(R.id.tvBalance);
+        btnCredit = view.findViewById(R.id.btnCredit);
+        btnDebit = view.findViewById(R.id.btnDebit);
+        etAmount = view.findViewById(R.id.etAmount);
 
         updateTextVBalance(tvBalance);
 
         btnCredit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String amountEntered = etAmount.getText().toString().trim();
-                float floatamount = Float.parseFloat(amountEntered);
-                helper.onCredit(floatamount,getContext());
+                float amount = Float.parseFloat(getEditTextAmount());
+                    helper.onTransaction(amount, context, CREDIT);
+                    updateTextVBalance(tvBalance);
+            }
+        });
+
+        btnDebit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                float amount = Float.parseFloat(getEditTextAmount());
+                helper.onTransaction(amount, context, DEBIT);
                 updateTextVBalance(tvBalance);
             }
         });
@@ -43,9 +58,12 @@ public class Home extends Fragment {
         if(helper.checkIfRowExists(getContext())== 0){
             tvBalance.setText("Rs.0");
         }else {
-            float currentBalance = helper.getCurrentBalance(getContext());
-            String balance = String.valueOf(currentBalance);
-            tvBalance.setText(balance);
+            String balance = String.valueOf(helper.getCurrentBalance(context));
+            tvBalance.setText("Rs."+balance);
         }
+    }
+
+    private String getEditTextAmount(){
+        return etAmount.getText().toString().trim();
     }
 }
