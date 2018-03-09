@@ -16,6 +16,7 @@ public class Home extends Fragment {
     public Context context = getContext();
     public final MySqliteTaskHelper helper = new MySqliteTaskHelper(context);
     private final String CREDIT = "CREDIT", DEBIT = "DEBIT";
+    private TransactionManager tm;
 
     private TextView tvBalance;
     private Button btnCredit;
@@ -32,13 +33,15 @@ public class Home extends Fragment {
         btnDebit = view.findViewById(R.id.btnDebit);
         etAmount = view.findViewById(R.id.etAmount);
 
+        tm = new TransactionManager(context);
+
         updateTextVBalance(tvBalance);
 
         btnCredit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 float amount = Float.parseFloat(getEditTextAmount());
-                    helper.onTransaction(amount, context, CREDIT);
+                   tm.initiateTransaction(amount,CREDIT);
                     updateTextVBalance(tvBalance);
             }
         });
@@ -47,7 +50,7 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
                 float amount = Float.parseFloat(getEditTextAmount());
-                helper.onTransaction(amount, context, DEBIT);
+                tm.initiateTransaction(amount,DEBIT);
                 updateTextVBalance(tvBalance);
             }
         });

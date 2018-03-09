@@ -41,82 +41,57 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void processTransaction(String transactionMode, float amount, Context context){
-        float currentBalance = getCurrentBalance(context);
-        Log.d("SQL","CurrentBalance : Rs."+currentBalance);
-        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
-        db = sqliteTaskHelperInstance.getWritableDatabase();
-        if(transactionMode.equals(CREDIT)){
-            currentBalance+=amount;
-            Log.d("SQL","After Credit, CurrentBalance : Rs."+currentBalance);
-        }else{
-            currentBalance-=amount;
-            Log.d("SQL","After Debit, CurrentBalance : Rs."+currentBalance);
-        }
-        ContentValues values = new ContentValues();
-        values.put("BALANCE", currentBalance);
-        db.update("MAIN_BALANCE", values, "NAME ='TOTAL'", null);
-        close(db, sqliteTaskHelperInstance);
-    }
-
-//    public void onCredit(Float amount, Context context){
-//        if(checkIfRowExists(context)==0){
-//            firstCredit(context, amount);
-//        }else {
-//            float currentBalance = getCurrentBalance(context);
+//    public void processTransaction(String transactionMode, float amount, Context context){
+//        float currentBalance = getCurrentBalance(context);
+//        Log.d("SQL","CurrentBalance : Rs."+currentBalance);
+//        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+//        db = sqliteTaskHelperInstance.getWritableDatabase();
+//        if(transactionMode.equals(CREDIT)){
 //            currentBalance+=amount;
+//            Log.d("SQL","After Credit, CurrentBalance : Rs."+currentBalance);
+//        }else{
+//            currentBalance-=amount;
+//            Log.d("SQL","After Debit, CurrentBalance : Rs."+currentBalance);
+//        }
+//        ContentValues values = new ContentValues();
+//        values.put("BALANCE", currentBalance);
+//        db.update("MAIN_BALANCE", values, "NAME ='TOTAL'", null);
+//        close(db, sqliteTaskHelperInstance);
+//    }
+
+
+//    public void onTransaction(Float amount, Context context,String transactionMode){
+//        if(transactionMode.equals(CREDIT)){
+//            if(checkIfRowExists(context)==0)
+//                firstCredit(context, amount);
+//            else{
+//                processTransaction(transactionMode, amount, context);
+//            }
+//        }
+//        else if(transactionMode.equals(DEBIT)){
+//            if(checkIfRowExists(context)==0)
+//                Toast.makeText(context,"Nothing to Debit",Toast.LENGTH_SHORT).show();
+//            else{
+//                processTransaction(transactionMode, amount, context);
+//            }
+//        }
+//    }
+
+
+//    public void firstCredit(Context context, float amount){
+//        if(checkIfRowExists(context) == 0) {
 //            sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
 //            db = sqliteTaskHelperInstance.getWritableDatabase();
 //            ContentValues values = new ContentValues();
-//            values.put("BALANCE", currentBalance);
-//            db.update("MAIN_BALANCE", values, "NAME ='TOTAL'", null);
-//            close(db, sqliteTaskHelperInstance);
-//        }
-//    }
-//
-//    public void onDebit(Float amount, Context context){
-//        if(checkIfRowExists(context)==0){
-//            Toast.makeText(context,"Nothing to Debit",Toast.LENGTH_SHORT).show();
+//            values.put("NAME", "TOTAL");
+//            values.put("BALANCE", amount);
+//            db.insert("MAIN_BALANCE", null, values);
+//            Log.d("SQL","First Row Inserted");
+//            close(db,sqliteTaskHelperInstance);
 //        }else{
-//            float currentBalance = getCurrentBalance(context);
-//            currentBalance-=amount;
-//            sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
-//
+//            Log.d("SQL", "Row Exists");
 //        }
 //    }
-
-    public void onTransaction(Float amount, Context context,String transactionMode){
-        if(transactionMode.equals(CREDIT)){
-            if(checkIfRowExists(context)==0)
-                firstCredit(context, amount);
-            else{
-                processTransaction(transactionMode, amount, context);
-            }
-        }
-        else if(transactionMode.equals(DEBIT)){
-            if(checkIfRowExists(context)==0)
-                Toast.makeText(context,"Nothing to Debit",Toast.LENGTH_SHORT).show();
-            else{
-                processTransaction(transactionMode, amount, context);
-            }
-        }
-    }
-
-
-    public void firstCredit(Context context, float amount){
-        if(checkIfRowExists(context) == 0) {
-            sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
-            db = sqliteTaskHelperInstance.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("NAME", "TOTAL");
-            values.put("BALANCE", amount);
-            db.insert("MAIN_BALANCE", null, values);
-            Log.d("SQL","First Row Inserted");
-            close(db,sqliteTaskHelperInstance);
-        }else{
-            Log.d("SQL", "Row Exists");
-        }
-    }
 
     public int checkIfRowExists(Context context){
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
