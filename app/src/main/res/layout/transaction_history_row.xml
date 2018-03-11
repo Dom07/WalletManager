@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:text="Credit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTransactionMode"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:text="Rs.100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTransactionAmount"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:text="Online Shopping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTransactionReason"/>
+
+</LinearLayout>
