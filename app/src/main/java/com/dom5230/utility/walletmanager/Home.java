@@ -42,6 +42,13 @@ public class Home extends Fragment {
             public void onClick(View view) {
                 float amount = Float.parseFloat(getEditTextAmount());
                    tm.initiateTransaction(amount,CREDIT);
+
+
+//                   just testing the transaction history function
+                   tm.getTransactionHistory();
+
+                   
+
                     updateTextVBalance(tvBalance);
             }
         });
