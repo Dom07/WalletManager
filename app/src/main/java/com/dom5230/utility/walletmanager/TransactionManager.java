@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
-
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * Created by root on 9/3/18.
@@ -86,25 +86,28 @@ public class TransactionManager {
         db.insert("TRANS_HISTORY",null,values);
     }
 
-    public void getTransactionHistory() {
+    public ArrayList<TransactionHistoryItem>  getTransactionHistory() {
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
         String[] PROJECTION = {"TIMESTAMP", "TRANS_MODE", "AMOUNT", "BALANCE"};
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query("TRANS_HISTORY", PROJECTION, null, null, null, null, null);
         int i = 1;
+        ArrayList<TransactionHistoryItem> transactionHistoryItems = new ArrayList<TransactionHistoryItem>();
         if (cursor == null) {
             Log.d("SQL_TEST", "TRANSACTION TABLE EMPTY");
+            return null;
         } else {
             while (cursor.moveToNext()) {
-                String timestamp = cursor.getString(0);
-                String trans_mode = cursor.getString(1);
-                String amount = cursor.getString(2);
-                String balance = cursor.getString(3);
+                TransactionHistoryItem item = new TransactionHistoryItem(cursor.getString(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3));
+                transactionHistoryItems.add(item);
                 System.out.println("ROW No:" + i);
-                Log.d("SQL_TEST", "Time Stamp : " + timestamp + ", Trans_Mode: " + trans_mode + " ,Amount: " + amount + " ,Balance: " + balance);
                 i++;
             }
             helper.close(db, helper);
+            return transactionHistoryItems;
         }
     }
 }
