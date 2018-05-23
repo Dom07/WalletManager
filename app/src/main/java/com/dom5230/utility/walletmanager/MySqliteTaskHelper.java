@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -41,35 +42,39 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertRow(Context context){
+    public void insertRow(Context context, String amount, String category){
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
         SQLiteDatabase db =  helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(table.DATE, Calendar.DATE);
         values.put(table.TIME, "10:16");
         values.put(table.DAY_OF_WEEK, Calendar.DAY_OF_WEEK);
-        values.put(table.CATEGORY, "Food");
-        values.put(table.AMOUNT, "3000");
+        values.put(table.CATEGORY, category);
+        values.put(table.AMOUNT, amount);
         long row = db.insert(table.TABLE_NAME, null, values);
         Log.i("SQL INSERT",String.valueOf(row));
     }
 
-    public void getRows(Context context){
+    public ArrayList<TransactionHistoryItem> getRowsAsArrayListObjects(Context context){
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
         Cursor cursor = db.query(table.TABLE_NAME, new String[]{"*"},null, null, null, null,null);
         int row = cursor.getCount();
+        ArrayList<TransactionHistoryItem> arrayListItems = new ArrayList<TransactionHistoryItem>();
         cursor.moveToFirst();
         for(int i = 0; i<row;i++){
-            String Date =cursor.getString(0);
-            String Time = cursor.getString(2);
-            String DayOfWeek = cursor.getString(3);
-            String Category = cursor.getString(4);
-            String Amount = cursor.getString(5);
-            Log.i("SQL ROW "+i+" :","Date:"+Date+" Time:"+Time+" DOW:"+DayOfWeek+" Category:"+Category+" Amount:"+Amount);
+            String date = cursor.getString(1);
+            String time = cursor.getString(2);
+            String dayOfWeek = cursor.getString(3);
+            String category = cursor.getString(4);
+            String amount = cursor.getString(5);
+            TransactionHistoryItem item = new TransactionHistoryItem(date,time,dayOfWeek,category,amount);
+            arrayListItems.add(item);
             cursor.moveToNext();
         }
+        return arrayListItems;
     }
+
 
 //
 //    public int checkIfRowExists(Context context){

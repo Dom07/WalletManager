@@ -18,7 +18,7 @@ public class TransactionHistoryAdapter extends ArrayAdapter {
 
     Activity context;
     ArrayList<TransactionHistoryItem> transactionHistoryItems;
-    TextView tvTransactionMode, tvTransactionAmount, tvTransactionBalance, tvTimeStamp;
+    TextView tvTransactionAmount, tvTransactionCategory, tvTransactionDate, tvTransactionTime, tvTransactionDayofWeek;
     TransactionHistoryItem transactionHistoryItem;
 
     public TransactionHistoryAdapter(Activity context, ArrayList<TransactionHistoryItem> transactionHistoryItems){
@@ -33,15 +33,17 @@ public class TransactionHistoryAdapter extends ArrayAdapter {
         View rowView = inflater.inflate(R.layout.transaction_history_row,null,true);
         transactionHistoryItem = transactionHistoryItems.get(position);
 
-        tvTransactionMode = rowView.findViewById(R.id.tvTransactionMode);
         tvTransactionAmount = rowView.findViewById(R.id.tvTransactionAmount);
-        tvTransactionBalance = rowView.findViewById(R.id.tvTransactionBalance);
-        tvTimeStamp = rowView.findViewById(R.id.tvTimeStamp);
+        tvTransactionDate = rowView.findViewById(R.id.TVTransactionDate);
+        tvTransactionTime = rowView.findViewById(R.id.TVTransactionTime);
+        tvTransactionDayofWeek = rowView.findViewById(R.id.TVDayOfWeek);
+        tvTransactionCategory = rowView.findViewById(R.id.tvTransactionCategory);
 
-        tvTransactionMode.setText(transactionHistoryItem.getTrans_mode());
-        tvTransactionAmount.setText(transactionHistoryItem.getAmount());
-        tvTransactionBalance.setText(transactionHistoryItem.getBalance());
-        tvTimeStamp.setText(transactionHistoryItem.getTimestamp());
+        tvTransactionDate.setText(transactionHistoryItem.getDate());
+        tvTransactionTime.setText(transactionHistoryItem.getTime());
+        tvTransactionDayofWeek.setText(transactionHistoryItem.getDayOfWeek());
+        tvTransactionCategory.setText(transactionHistoryItem.getCategory());
+        tvTransactionAmount.setText(transactionHistoryItem.getAmouont());
 
         return rowView;
     }

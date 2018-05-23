@@ -4,12 +4,6 @@
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:layout_margin="10dp">
 
-    <TextView
-        android:text="Credit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvTransactionMode"
-        android:textStyle="bold"/>
 
     <TextView
         android:textStyle="bold"
@@ -23,14 +17,36 @@
         android:text="Online Shopping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvTransactionBalance"/>
+        android:id="@+id/tvTransactionCategory"/>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="10:53 AM 14th MARCH 2018"
-        android:id="@+id/tvTimeStamp"/>
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVTransactionDate"
+            android:text="10/20/2020"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVTransactionTime"
+            android:text="20:20" />
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:id="@+id/TVDayOfWeek"
+            android:text="Sunday"/>
+    </LinearLayout>
 
 </LinearLayout>

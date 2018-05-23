@@ -8,6 +8,7 @@ public class TransactionTable {
     String DAY_OF_WEEK = "DAY_OF_WEEK";
     String CATEGORY = "CATEGORY";
     String AMOUNT = "AMOUNT";
+
     String CREATE_TABLE = "CREATE TABLE "+TABLE_NAME+" ("+SERIAL_NUMBER+" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 1, "
             +DATE+" STRING, "
             +TIME+" STRING, "

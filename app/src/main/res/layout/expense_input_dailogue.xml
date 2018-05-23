@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter Amount:"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"/>
+
+    <EditText
+        android:layout_marginLeft="25dp"
+        android:inputType="number"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/ETAmount" />
+
+    <TextView
+        android:layout_marginLeft="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category:"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <Spinner
+        android:id="@+id/SpinnerCategory"
+        android:layout_marginLeft="25dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content">
+    </Spinner>
+
+</LinearLayout>

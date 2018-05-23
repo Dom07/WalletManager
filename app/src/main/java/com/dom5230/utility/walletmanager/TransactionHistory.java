@@ -29,6 +29,6 @@ public class TransactionHistory extends Fragment {
 //        }else{
 //            Toast.makeText(getContext(),"No History Exist",Toast.LENGTH_SHORT).show();
 //        }
-         return view;
+      return view;
     }
 }

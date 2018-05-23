@@ -5,29 +5,34 @@ package com.dom5230.utility.walletmanager;
  */
 
 public class TransactionHistoryItem {
-    private String timestamp, trans_mode, amount, balance;
+    private String Date, Time, DayOfWeek, Category, Amouont;
 
-    public TransactionHistoryItem(String timestamp, String trans_mode, String amount, String balance){
-        this.timestamp = timestamp;
-        this.trans_mode = trans_mode;
-        this.amount = amount;
-        this.balance = balance;
+    public TransactionHistoryItem(String Date, String Time, String DayOFWeek, String Category, String Amount){
+        this.Date = Date;
+        this.Time = Time;
+        this.DayOfWeek = DayOFWeek;
+        this.Category = Category;
+        this.Amouont = Amount;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+
+    public String getDate() {
+        return Date;
     }
 
-    public String getTrans_mode() {
-        return trans_mode;
+    public String getTime() {
+        return Time;
     }
 
-    public String getAmount() {
-        return amount;
+    public String getDayOfWeek() {
+        return DayOfWeek;
     }
 
-    public String getBalance() {
-        return balance;
+    public String getCategory() {
+        return Category;
     }
 
+    public String getAmouont() {
+        return Amouont;
+    }
 }
