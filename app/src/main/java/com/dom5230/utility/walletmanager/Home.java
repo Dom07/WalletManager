@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -129,7 +130,7 @@ public class Home extends Fragment {
 
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(dataPoints);
         barGraph.addSeries(series);
-        series.setSpacing(50);
+        series.setSpacing(20);
 
         int countofDays = dataPoints.length;
         String[] ActiveDataDays = new String[countofDays];
@@ -144,5 +145,8 @@ public class Home extends Fragment {
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
         series.setValuesOnTopSize(30);
+
+        barGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        barGraph.getViewport().setDrawBorder(true);
     }
 }
