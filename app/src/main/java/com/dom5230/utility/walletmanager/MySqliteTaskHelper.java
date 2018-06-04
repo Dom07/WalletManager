@@ -45,22 +45,36 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
     public void insertRow(Context context, String amount, String category){
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
         SQLiteDatabase db =  helper.getWritableDatabase();
+
+        Calendar calendar = Calendar.getInstance();
+
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+
+        int date = calendar.get(Calendar.DATE);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        int dayofWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        String[] daysofweek = new String[]{"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+
+
         ContentValues values = new ContentValues();
-        values.put(table.DATE, Calendar.DATE);
-        values.put(table.TIME, "10:16");
-        values.put(table.DAY_OF_WEEK, Calendar.DAY_OF_WEEK);
+        values.put(table.DATE, String.valueOf(date+"/"+month+"/"+year));
+        values.put(table.TIME, String.valueOf(hour+":"+minutes));
+        values.put(table.DAY_OF_WEEK, daysofweek[dayofWeek-1]);
         values.put(table.CATEGORY, category);
         values.put(table.AMOUNT, amount);
         long row = db.insert(table.TABLE_NAME, null, values);
         Log.i("SQL INSERT",String.valueOf(row));
     }
 
-    public ArrayList<TransactionHistoryItem> getRowsAsArrayListObjects(Context context){
+    public ArrayList<TransactionRecord> getRowsAsArrayListObjects(Context context){
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
         Cursor cursor = db.query(table.TABLE_NAME, new String[]{"*"},null, null, null, null,null);
         int row = cursor.getCount();
-        ArrayList<TransactionHistoryItem> arrayListItems = new ArrayList<TransactionHistoryItem>();
+        ArrayList<TransactionRecord> arrayListItems = new ArrayList<TransactionRecord>();
         cursor.moveToFirst();
         for(int i = 0; i<row;i++){
             String date = cursor.getString(1);
@@ -68,12 +82,58 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
             String dayOfWeek = cursor.getString(3);
             String category = cursor.getString(4);
             String amount = cursor.getString(5);
-            TransactionHistoryItem item = new TransactionHistoryItem(date,time,dayOfWeek,category,amount);
+            TransactionRecord item = new TransactionRecord(date,time,dayOfWeek,category,amount);
             arrayListItems.add(item);
             cursor.moveToNext();
         }
         return arrayListItems;
     }
+
+
+    public ArrayList<TransactionRecord> getRecentTwoRows(Context context){
+        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+        db = sqliteTaskHelperInstance.getReadableDatabase();
+
+        // using this counter so our for loop only runs 2 times
+        int counter = 0;
+
+        Cursor cursor = db.query(table.TABLE_NAME, new String[]{"*"},null, null, null, null,null);
+        int row = cursor.getCount();
+
+        ArrayList<TransactionRecord> arrayListItems = new ArrayList<TransactionRecord>();
+        cursor.moveToLast();
+
+        for(int i = row; i > 0; i--){
+            String date = cursor.getString(1);
+            String time = cursor.getString(2);
+            String dayOfWeek = cursor.getString(3);
+            String category = cursor.getString(4);
+            String amount = cursor.getString(5);
+            TransactionRecord item = new TransactionRecord(date,time,dayOfWeek,category,amount);
+            arrayListItems.add(item);
+            if(counter == 1){
+                break;
+            }
+            counter++;
+            cursor.moveToPrevious();
+        }
+        return  arrayListItems;
+    }
+
+    public int getExpensesForToday(Context context){
+        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+        db = sqliteTaskHelperInstance.getReadableDatabase();
+        int total = 0;
+        Cursor cursor = db.query(table.TABLE_NAME,new String[]{table.AMOUNT},null,null,null,null,null);
+        cursor.moveToFirst();
+        for(int i = 0 ; i< cursor.getCount(); i++){
+            String amount = cursor.getString(0);
+            total+=Integer.parseInt(amount);
+        }
+        return total;
+    }
+
+
 
 
 //

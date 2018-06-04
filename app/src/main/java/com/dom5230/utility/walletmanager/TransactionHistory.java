@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 
 public class TransactionHistory extends Fragment {
-    ArrayList<TransactionHistoryItem> transactionHistoryItems;
+    ArrayList<TransactionRecord> transactionHistoryItems;
 
     @Nullable
     @Override

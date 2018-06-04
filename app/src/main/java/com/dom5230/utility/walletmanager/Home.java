@@ -2,7 +2,9 @@ package com.dom5230.utility.walletmanager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+
 import java.util.ArrayList;
 
 public class Home extends Fragment {
@@ -25,7 +35,8 @@ public class Home extends Fragment {
     // UI Components
     FloatingActionButton fab;
     ListView lvLastFiveTransactions;
-
+    GraphView barGraph;
+    TextView SpendingsForToday;
 
     @Nullable
     @Override
@@ -33,9 +44,16 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         helper = MySqliteTaskHelper.getInstance(getContext());
+        items = new ArrayList<>();
+
 
         fab = view.findViewById(R.id.FAB);
+        SpendingsForToday = view.findViewById(R.id.SpendingsForToday);
         lvLastFiveTransactions = view.findViewById(R.id.LVLastFiveTransacctions);
+        barGraph = view.findViewById(R.id.BarGraph);
+
+        setBarGraph();
+        updateTodaysExpense();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +67,9 @@ public class Home extends Fragment {
         return view;
     }
 
+    public void updateTodaysExpense(){
+        SpendingsForToday.setText("₹ "+String.valueOf(helper.getExpensesForToday(getContext())));
+    }
 
     public void expenseAlertBox(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
@@ -57,7 +78,7 @@ public class Home extends Fragment {
         final EditText ETAmount = mview.findViewById(R.id.ETAmount);
         final Spinner spinner = mview.findViewById(R.id.SpinnerCategory);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.category, android.R.layout.simple_spinner_item);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.category, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -66,7 +87,7 @@ public class Home extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 helper.insertRow(getContext(), ETAmount.getText().toString(),spinner.getSelectedItem().toString());
                 populateListView();
-
+                updateTodaysExpense();
             }
         });
 
@@ -81,5 +102,47 @@ public class Home extends Fragment {
         items = helper.getRecentTwoRows(getContext());
         historyAdapter = new TransactionHistoryAdapter(getActivity(), items);
         lvLastFiveTransactions.setAdapter(historyAdapter);
+    }
+
+    public void setBarGraph(){
+
+        ArrayList<String> days = new ArrayList<>();
+        days.add("");
+        days.add("Mon");
+        days.add("Tue");
+        days.add("Wed");
+        days.add("Thu");
+        days.add("Fri");
+        days.add("Sat");
+        days.add("Sun");
+
+        DataPoint[] dataPoints = new DataPoint[]{
+                new DataPoint(0,0),
+                new DataPoint(1, 500),
+                new DataPoint(2, 200),
+                new DataPoint(3, 300),
+                new DataPoint(4, 250),
+                new DataPoint(5, 100),
+                new DataPoint(6, 400),
+                new DataPoint(7, 320),
+        };
+
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(dataPoints);
+        barGraph.addSeries(series);
+        series.setSpacing(50);
+
+        int countofDays = dataPoints.length;
+        String[] ActiveDataDays = new String[countofDays];
+        for(int i = 0; i<countofDays ; i++){
+            ActiveDataDays[i] = days.get(i);
+        }
+
+        StaticLabelsFormatter formatter = new StaticLabelsFormatter(barGraph);
+        formatter.setHorizontalLabels(ActiveDataDays);
+        barGraph.getGridLabelRenderer().setLabelFormatter(formatter);
+
+        series.setDrawValuesOnTop(true);
+        series.setValuesOnTopColor(Color.RED);
+        series.setValuesOnTopSize(30);
     }
 }

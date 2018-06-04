@@ -17,21 +17,21 @@ import java.util.ArrayList;
 public class TransactionHistoryAdapter extends ArrayAdapter {
 
     Activity context;
-    ArrayList<TransactionHistoryItem> transactionHistoryItems;
+    ArrayList<TransactionRecord> transactionRecordItems;
     TextView tvTransactionAmount, tvTransactionCategory, tvTransactionDate, tvTransactionTime, tvTransactionDayofWeek;
-    TransactionHistoryItem transactionHistoryItem;
+    TransactionRecord transactionRecord;
 
-    public TransactionHistoryAdapter(Activity context, ArrayList<TransactionHistoryItem> transactionHistoryItems){
-        super(context,R.layout.transaction_history_row,transactionHistoryItems);
+    public TransactionHistoryAdapter(Activity context, ArrayList<TransactionRecord> transactionRecordItems){
+        super(context,R.layout.transaction_history_row,transactionRecordItems);
         this.context = context;
-        this.transactionHistoryItems = transactionHistoryItems;
+        this.transactionRecordItems = transactionRecordItems;
     }
 
     @Override
     public View getView(int position,View convertView,ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.transaction_history_row,null,true);
-        transactionHistoryItem = transactionHistoryItems.get(position);
+        transactionRecord = transactionRecordItems.get(position);
 
         tvTransactionAmount = rowView.findViewById(R.id.tvTransactionAmount);
         tvTransactionDate = rowView.findViewById(R.id.TVTransactionDate);
@@ -39,11 +39,11 @@ public class TransactionHistoryAdapter extends ArrayAdapter {
         tvTransactionDayofWeek = rowView.findViewById(R.id.TVDayOfWeek);
         tvTransactionCategory = rowView.findViewById(R.id.tvTransactionCategory);
 
-        tvTransactionDate.setText(transactionHistoryItem.getDate());
-        tvTransactionTime.setText(transactionHistoryItem.getTime());
-        tvTransactionDayofWeek.setText(transactionHistoryItem.getDayOfWeek());
-        tvTransactionCategory.setText(transactionHistoryItem.getCategory());
-        tvTransactionAmount.setText(transactionHistoryItem.getAmouont());
+        tvTransactionDate.setText(transactionRecord.getDate());
+        tvTransactionTime.setText(transactionRecord.getTime());
+        tvTransactionDayofWeek.setText(transactionRecord.getDayOfWeek());
+        tvTransactionCategory.setText(transactionRecord.getCategory());
+        tvTransactionAmount.setText("₹"+transactionRecord.getAmouont());
 
         return rowView;
     }

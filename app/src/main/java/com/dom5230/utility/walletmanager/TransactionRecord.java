@@ -4,10 +4,10 @@ package com.dom5230.utility.walletmanager;
  * Created by root on 14/3/18.
  */
 
-public class TransactionHistoryItem {
+public class TransactionRecord {
     private String Date, Time, DayOfWeek, Category, Amouont;
 
-    public TransactionHistoryItem(String Date, String Time, String DayOFWeek, String Category, String Amount){
+    public TransactionRecord(String Date, String Time, String DayOFWeek, String Category, String Amount){
         this.Date = Date;
         this.Time = Time;
         this.DayOfWeek = DayOFWeek;

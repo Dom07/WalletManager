@@ -1,52 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="10dp"
     android:layout_margin="10dp">
 
 
     <TextView
+        android:layout_centerVertical="true"
         android:textStyle="bold"
         android:text="Rs.100"
+        android:textSize="25sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvTransactionAmount"/>
+        android:id="@+id/tvTransactionAmount"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:textColor="@color/colorRed"/>
 
     <TextView
         android:textStyle="bold"
+        android:textSize="15sp"
         android:text="Online Shopping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvTransactionCategory"/>
 
     <LinearLayout
+        android:id="@+id/LLDateContainer"
+        android:layout_below="@+id/tvTransactionCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/TVTransactionDate"
-            android:text="10/20/2020"
-            android:textStyle="bold"
-            />
-
-        <TextView
-            android:textStyle="bold"
-            android:layout_marginLeft="20dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/TVTransactionTime"
             android:text="20:20" />
 
         <TextView
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:id="@+id/TVDayOfWeek"
-            android:text="Sunday"/>
+            android:id="@+id/TVTransactionDate"
+            android:text="10/20/2020"
+            android:textSize="15sp"
+            />
+
     </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:layout_below="@id/LLDateContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/TVDayOfWeek"
+        android:text="Sunday"
+        android:textSize="15sp"/>
+</RelativeLayout>
