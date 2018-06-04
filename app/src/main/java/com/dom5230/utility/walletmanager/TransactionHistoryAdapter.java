@@ -1,6 +1,7 @@
 package com.dom5230.utility.walletmanager;
 
 import android.app.Activity;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

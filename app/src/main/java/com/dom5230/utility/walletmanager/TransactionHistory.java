@@ -8,27 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-
 public class TransactionHistory extends Fragment {
-    ArrayList<TransactionRecord> transactionHistoryItems;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transaction_history, container, false);
-//        ListView lv = view.findViewById(R.id.lvTransactionsHistory);
-//        TransactionManager tm = new TransactionManager(getContext());
-//        transactionHistoryItems = tm.getTransactionHistory();
-//        if(transactionHistoryItems != null){
-//        TransactionHistoryAdapter ta = new TransactionHistoryAdapter(getActivity(),transactionHistoryItems);
-//        lv.setAdapter(ta);
-//        }else{
-//            Toast.makeText(getContext(),"No History Exist",Toast.LENGTH_SHORT).show();
-//        }
+        MySqliteTaskHelper helper = new MySqliteTaskHelper(getContext());
+        ArrayList<TransactionRecord> items = helper.getRowsAsArrayListObjects(getContext());
+        TransactionHistoryAdapter adapter = new TransactionHistoryAdapter(getActivity(),items);
+        ListView listView = view.findViewById(R.id.lvTransactionsHistory);
+        listView.setAdapter(adapter);
+
       return view;
     }
 }

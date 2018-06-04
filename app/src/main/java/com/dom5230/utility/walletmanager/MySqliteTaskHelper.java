@@ -126,9 +126,10 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         int total = 0;
         Cursor cursor = db.query(table.TABLE_NAME,new String[]{table.AMOUNT},null,null,null,null,null);
         cursor.moveToFirst();
-        for(int i = 0 ; i< cursor.getCount(); i++){
+        while(!cursor.isAfterLast()){
             String amount = cursor.getString(0);
-            total+=Integer.parseInt(amount);
+            total = total + Integer.parseInt(amount);
+            cursor.moveToNext();
         }
         return total;
     }
