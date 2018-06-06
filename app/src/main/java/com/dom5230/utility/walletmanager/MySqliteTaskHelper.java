@@ -19,6 +19,7 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
     private static MySqliteTaskHelper sqliteTaskHelperInstance = null;
     private SQLiteDatabase db;
     private TransactionTable table = new TransactionTable();
+    private CategoryTable categoryTable = new CategoryTable();
 
     public MySqliteTaskHelper(Context context) {
         super(context, "transaction.db",null,1);
@@ -34,16 +35,32 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(table.CREATE_TABLE);
+        db.execSQL(categoryTable.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS "+table.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+categoryTable.TABLE_NAME);
         onCreate(db);
     }
 
 
-    public void insertRow(Context context, String amount, String category){
+//  Insert Queries here
+    public void insertCategories(Context context){
+        MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
+        SQLiteDatabase db =  helper.getWritableDatabase();
+        String[] categories = new String[]{"Food","Bills", "Travel", "Shopping", "Entertainment"};
+        ContentValues values = new ContentValues();
+        for(int i = 0; i<categories.length;i++){
+            values.put(categoryTable.CATEGORY, categories[i]);
+            long row = db.insert(categoryTable.TABLE_NAME, null, values);
+            values.clear();
+            Log.i("Categories row:",String.valueOf(row));
+        }
+    }
+
+    public void insertRecord(Context context, String amount, String category){
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
         SQLiteDatabase db =  helper.getWritableDatabase();
 
@@ -69,6 +86,7 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         Log.i("SQL INSERT",String.valueOf(row));
     }
 
+//  Fetch data queries here
     public ArrayList<TransactionRecord> getRowsAsArrayListObjects(Context context){
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
@@ -124,7 +142,8 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
         int total = 0;
-        Cursor cursor = db.query(table.TABLE_NAME,new String[]{table.AMOUNT},null,null,null,null,null);
+        String TodaysDate = getTodaysDate();
+        Cursor cursor = db.query(table.TABLE_NAME,new String[]{table.AMOUNT},table.DATE+"=?",new String[]{TodaysDate},null,null,null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             String amount = cursor.getString(0);
@@ -133,4 +152,32 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         }
         return total;
     }
+
+    public String getTodaysDate(){
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DATE);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        String date = day+"/"+month+"/"+year;
+        return date;
+    }
+
+    public int getIndividualCategoryTotal(){
+
+        return 0;
+    }
+
+    public ArrayList<String> getCategoriesList(Context context){
+        ArrayList<String> categories = new ArrayList<>();
+        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+        db = sqliteTaskHelperInstance.getReadableDatabase();
+        Cursor cursor = db.query(categoryTable.TABLE_NAME, new String[]{categoryTable.CATEGORY}, null, null, null, null, null);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            categories.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        return categories;
+    }
+
 }
