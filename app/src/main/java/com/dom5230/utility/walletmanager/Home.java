@@ -4,10 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +17,15 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
@@ -36,24 +39,27 @@ public class Home extends Fragment {
     // UI Components
     FloatingActionButton fab;
     ListView lvLastFiveTransactions;
-    GraphView barGraph;
     TextView SpendingsForToday;
+    PieChart pieChart;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+//      Objects
         helper = MySqliteTaskHelper.getInstance(getContext());
         items = new ArrayList<>();
 
-
+//      UI Components
         fab = view.findViewById(R.id.FAB);
         SpendingsForToday = view.findViewById(R.id.SpendingsForToday);
         lvLastFiveTransactions = view.findViewById(R.id.LVLastFiveTransacctions);
-        barGraph = view.findViewById(R.id.BarGraph);
+        pieChart = view.findViewById(R.id.piechart);
 
-        setBarGraph();
+//      Setting Pie Chart And Today's Expense Value
+        setPieChart();
         updateTodaysExpense();
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -105,48 +111,44 @@ public class Home extends Fragment {
         lvLastFiveTransactions.setAdapter(historyAdapter);
     }
 
-    public void setBarGraph(){
+    public void setPieChart(){
+        ArrayList<PieEntry> yvalues = new ArrayList<>();
+        yvalues.add(new PieEntry(8f, "Food"));
+        yvalues.add(new PieEntry(15f, "Bills"));
+        yvalues.add(new PieEntry(12f, "Shopping"));
+        yvalues.add(new PieEntry(25f, "Entertainment"));
+        yvalues.add(new PieEntry(23f, "Travel"));
 
-        ArrayList<String> days = new ArrayList<>();
-        days.add("");
-        days.add("Mon");
-        days.add("Tue");
-        days.add("Wed");
-        days.add("Thu");
-        days.add("Fri");
-        days.add("Sat");
-        days.add("Sun");
+        PieDataSet dataSet = new PieDataSet(yvalues, "Category");
+        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
-        DataPoint[] dataPoints = new DataPoint[]{
-                new DataPoint(0,0),
-                new DataPoint(1, 500),
-                new DataPoint(2, 200),
-                new DataPoint(3, 300),
-                new DataPoint(4, 250),
-                new DataPoint(5, 100),
-                new DataPoint(6, 400),
-                new DataPoint(7, 320),
-        };
+        PieData data = new PieData(dataSet);
+        data.setDrawValues(false);
 
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(dataPoints);
-        barGraph.addSeries(series);
-        series.setSpacing(20);
+        Description description = new Description();
+        description.setText("Categories");
+        pieChart.setDescription(description);
 
-        int countofDays = dataPoints.length;
-        String[] ActiveDataDays = new String[countofDays];
-        for(int i = 0; i<countofDays ; i++){
-            ActiveDataDays[i] = days.get(i);
-        }
+        pieChart.setEntryLabelColor(Color.BLUE);
+        pieChart.setData(data);
 
-        StaticLabelsFormatter formatter = new StaticLabelsFormatter(barGraph);
-        formatter.setHorizontalLabels(ActiveDataDays);
-        barGraph.getGridLabelRenderer().setLabelFormatter(formatter);
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                setPieCenterText(e);
+            }
 
-        series.setDrawValuesOnTop(true);
-        series.setValuesOnTopColor(Color.RED);
-        series.setValuesOnTopSize(30);
+            @Override
+            public void onNothingSelected() {
 
-        barGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        barGraph.getViewport().setDrawBorder(true);
+            }
+        });
+    }
+
+    public void setPieCenterText(Entry e){
+        PieEntry pieEntry = (PieEntry)e;
+        pieChart.setCenterText(pieEntry.getLabel()+": ₹"+(int)pieEntry.getValue());
+        pieChart.setCenterTextSize(15f);
+        pieChart.setCenterTextColor(Color.BLUE);
     }
 }

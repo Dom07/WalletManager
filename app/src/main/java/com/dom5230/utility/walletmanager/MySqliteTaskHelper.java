@@ -42,6 +42,7 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
     public void insertRow(Context context, String amount, String category){
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
         SQLiteDatabase db =  helper.getWritableDatabase();
@@ -57,7 +58,6 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
 
         int dayofWeek = calendar.get(Calendar.DAY_OF_WEEK);
         String[] daysofweek = new String[]{"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
-
 
         ContentValues values = new ContentValues();
         values.put(table.DATE, String.valueOf(date+"/"+month+"/"+year));
@@ -133,35 +133,4 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         }
         return total;
     }
-
-
-
-
-//
-//    public int checkIfRowExists(Context context){
-//        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
-//        db = sqliteTaskHelperInstance.getReadableDatabase();
-//        Cursor cursor = db.query("MAIN_BALANCE", new String[]{"*"},null,null,null,null,null );
-//        int row = cursor.getCount();
-//        Log.d("SQL","Row count ="+row);
-//        close(db,sqliteTaskHelperInstance);
-//        return row;
-//    }
-//
-//    public float getCurrentBalance(Context context){
-//        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
-//        db = sqliteTaskHelperInstance.getReadableDatabase();
-//        Cursor cursor = db.rawQuery("SELECT BALANCE FROM MAIN_BALANCE WHERE NAME = 'TOTAL'",null);
-//        cursor.moveToFirst();
-//        float currentBalance = cursor.getFloat(0);
-//        Log.d("SQL","Current Balance = "+currentBalance);
-//        close(db,sqliteTaskHelperInstance);
-//        return currentBalance;
-//    }
-//
-//
-//    public void close(SQLiteDatabase db, MySqliteTaskHelper sqliteTaskHelperInstance){
-//        db.close();
-//        sqliteTaskHelperInstance.close();
-//    }
 }
