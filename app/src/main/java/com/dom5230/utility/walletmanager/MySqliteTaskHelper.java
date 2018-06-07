@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.github.mikephil.charting.data.PieEntry;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -160,11 +162,6 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         int year = calendar.get(Calendar.YEAR);
         String date = day+"/"+month+"/"+year;
         return date;
-    }
-
-    public int getIndividualCategoryTotal(){
-
-        return 0;
     }
 
     public ArrayList<String> getCategoriesList(Context context){

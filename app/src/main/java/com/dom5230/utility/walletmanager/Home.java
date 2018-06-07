@@ -1,7 +1,9 @@
 package com.dom5230.utility.walletmanager;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,10 +33,12 @@ import java.util.ArrayList;
 
 public class Home extends Fragment {
 
+
     // Objects
     MySqliteTaskHelper helper;
     TransactionHistoryAdapter historyAdapter;
     ArrayList<TransactionRecord> items;
+    SharedPreferences sharedPreferences;
 
     // UI Components
     FloatingActionButton fab;
@@ -47,6 +51,9 @@ public class Home extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        sharedPreferences = getActivity().getSharedPreferences("com.dom5230.utility.walletmanager", Context.MODE_PRIVATE);
+        Boolean checkFirstRun = sharedPreferences.getBoolean("FirstRun", true);
+        Log.i("First Run:",String.valueOf(checkFirstRun));
 
 //      Objects
         helper = MySqliteTaskHelper.getInstance(getContext());
@@ -58,9 +65,14 @@ public class Home extends Fragment {
         lvLastFiveTransactions = view.findViewById(R.id.LVLastFiveTransacctions);
         pieChart = view.findViewById(R.id.piechart);
 
+//      Executed when the app runs for the first time
+        if(checkFirstRun){
+            firstRun();
+            helper.insertCategories(getContext());
+        }
+
 //      Setting Pie Chart And Today's Expense Value
-        setPieChart();
-        updateTodaysExpense();
+        updateUIData();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +86,9 @@ public class Home extends Fragment {
         return view;
     }
 
-    public void updateTodaysExpense(){
-        SpendingsForToday.setText("₹ "+String.valueOf(helper.getExpensesForToday(getContext())));
+    public void firstRun(){
+        sharedPreferences = getActivity().getSharedPreferences("com.dom5230.utility.walletmanager", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean("FirstRun",false).commit();
     }
 
     public void expenseAlertBox(){
@@ -92,9 +105,9 @@ public class Home extends Fragment {
         mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                helper.insertRow(getContext(), ETAmount.getText().toString(),spinner.getSelectedItem().toString());
+                helper.insertRecord(getContext(), ETAmount.getText().toString(),spinner.getSelectedItem().toString());
                 populateListView();
-                updateTodaysExpense();
+                updateUIData();
             }
         });
 
@@ -111,38 +124,47 @@ public class Home extends Fragment {
         lvLastFiveTransactions.setAdapter(historyAdapter);
     }
 
+    private  void updateUIData(){
+        setPieChart();
+        updateTodaysExpense();
+    }
+
+    public void updateTodaysExpense(){
+        SpendingsForToday.setText("₹ "+String.valueOf(helper.getExpensesForToday(getContext())));
+    }
+
     public void setPieChart(){
-        ArrayList<PieEntry> yvalues = new ArrayList<>();
-        yvalues.add(new PieEntry(8f, "Food"));
-        yvalues.add(new PieEntry(15f, "Bills"));
-        yvalues.add(new PieEntry(12f, "Shopping"));
-        yvalues.add(new PieEntry(25f, "Entertainment"));
-        yvalues.add(new PieEntry(23f, "Travel"));
+        MyPieChart pie = new MyPieChart(getContext());
 
-        PieDataSet dataSet = new PieDataSet(yvalues, "Category");
-        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        ArrayList<PieEntry> yvalues = pie.preparePieData();
 
-        PieData data = new PieData(dataSet);
-        data.setDrawValues(false);
+        if(yvalues.size() != 0) {
+            Log.i("YValues", String.valueOf(yvalues.size()));
+            PieDataSet dataSet = new PieDataSet(yvalues, "Category");
+            dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
-        Description description = new Description();
-        description.setText("Categories");
-        pieChart.setDescription(description);
+            PieData data = new PieData(dataSet);
+            data.setDrawValues(false);
 
-        pieChart.setEntryLabelColor(Color.BLUE);
-        pieChart.setData(data);
+            Description description = new Description();
+            description.setText("Categories");
+            pieChart.setDescription(description);
 
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                setPieCenterText(e);
-            }
+            pieChart.setEntryLabelColor(Color.BLUE);
+            pieChart.setData(data);
 
-            @Override
-            public void onNothingSelected() {
+            pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(Entry e, Highlight h) {
+                    setPieCenterText(e);
+                }
 
-            }
-        });
+                @Override
+                public void onNothingSelected() {
+
+                }
+            });
+        }
     }
 
     public void setPieCenterText(Entry e){
@@ -151,4 +173,5 @@ public class Home extends Fragment {
         pieChart.setCenterTextSize(15f);
         pieChart.setCenterTextColor(Color.BLUE);
     }
+
 }
