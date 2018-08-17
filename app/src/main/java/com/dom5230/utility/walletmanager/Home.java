@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -28,11 +27,9 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
 
 public class Home extends Fragment {
-
 
     // Objects
     MySqliteTaskHelper helper;
@@ -45,7 +42,6 @@ public class Home extends Fragment {
     ListView lvLastFiveTransactions;
     TextView SpendingsForToday;
     PieChart pieChart;
-
 
     @Nullable
     @Override
@@ -173,5 +169,4 @@ public class Home extends Fragment {
         pieChart.setCenterTextSize(15f);
         pieChart.setCenterTextColor(Color.BLUE);
     }
-
 }

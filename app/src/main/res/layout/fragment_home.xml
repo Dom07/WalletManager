@@ -9,7 +9,11 @@
         android:id="@+id/rlContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp">
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
 
         <LinearLayout
             android:id="@+id/layout1"
@@ -19,7 +23,7 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="65dp"
                 android:layout_weight="1"
                 android:elevation="10dp"
                 android:layout_marginRight="2dp">
@@ -52,7 +56,7 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="65dp"
                 android:layout_weight="1"
                 android:elevation="10dp"
                 android:layout_marginLeft="2dp">
@@ -84,13 +88,13 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.CardView
+        <!--android.support.v7.widget.CardView
             android:id="@+id/testLayout"
             android:layout_below="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="7dp">
 
             <LinearLayout
                 android:padding="10dp"
@@ -117,15 +121,14 @@
 
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        </-android.support.v7.widget.CardView-->
 
         <android.support.v7.widget.CardView
             android:id="@+id/layout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/testLayout"
+            android:layout_below="@id/layout1"
             android:layout_above="@+id/labelRecentTransaction"
-            android:layout_marginTop="2dp"
             android:elevation="10dp"
             android:layout_marginBottom="5dp">
 
@@ -165,7 +168,7 @@
                 <ListView
                     android:id="@+id/LVLastFiveTransacctions"
                     android:layout_width="match_parent"
-                    android:layout_height="163dp">
+                    android:layout_height="wrap_content">
                 </ListView>
 
         </android.support.v7.widget.CardView>
@@ -176,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"
+            android:layout_marginBottom="16dp"
             android:clickable="true"
             android:elevation="10dp"
             android:src="@drawable/ic_add_white_24dp"
