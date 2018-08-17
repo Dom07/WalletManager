@@ -1,6 +1,7 @@
 package com.dom5230.utility.walletmanager;
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -11,8 +12,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -41,6 +44,7 @@ public class Home extends Fragment {
     FloatingActionButton fab;
     ListView lvLastFiveTransactions;
     TextView SpendingsForToday;
+    TextView averageSpendings;
     PieChart pieChart;
 
     @Nullable
@@ -56,6 +60,7 @@ public class Home extends Fragment {
         items = new ArrayList<>();
 
 //      UI Components
+        averageSpendings = view.findViewById(R.id.tvAverageSpending);
         fab = view.findViewById(R.id.FAB);
         SpendingsForToday = view.findViewById(R.id.SpendingsForToday);
         lvLastFiveTransactions = view.findViewById(R.id.LVLastFiveTransacctions);
@@ -67,7 +72,7 @@ public class Home extends Fragment {
             helper.insertCategories(getContext());
         }
 
-//      Setting Pie Chart And Today's Expense Value
+//      Setting Up the ui components
         updateUIData();
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -91,11 +96,14 @@ public class Home extends Fragment {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         View mview = getLayoutInflater().inflate(R.layout.expense_input_dailogue,null);
 
+
         final EditText ETAmount = mview.findViewById(R.id.ETAmount);
         final Spinner spinner = mview.findViewById(R.id.SpinnerCategory);
 
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.category, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayList<String> categoriesList = helper.getCategoriesList(getContext());
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoriesList);
+//        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.category , android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
         mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -118,15 +126,41 @@ public class Home extends Fragment {
         items = helper.getRecentTwoRows(getContext());
         historyAdapter = new TransactionHistoryAdapter(getActivity(), items);
         lvLastFiveTransactions.setAdapter(historyAdapter);
+        if(!historyAdapter.isEmpty()){
+            lvLastFiveTransactions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    transactionClickListener();
+                }
+            });
+        }
+    }
+
+    public void transactionClickListener(){
+        final android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, new TransactionHistory(), "Transaction History");
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     private  void updateUIData(){
         setPieChart();
         updateTodaysExpense();
+        updateAverageSalary();
     }
 
     public void updateTodaysExpense(){
         SpendingsForToday.setText("₹ "+String.valueOf(helper.getExpensesForToday(getContext())));
+    }
+
+    public void updateAverageSalary(){
+        int average = 0;
+        int total = helper.getExpensesForToday(getContext());
+        int getCount = helper.getNumberOfTransactionsDoneToday(getContext());
+        if(getCount != 0){
+            average = total/getCount;
+        }
+        averageSpendings.setText("Rs. "+average);
     }
 
     public void setPieChart(){
