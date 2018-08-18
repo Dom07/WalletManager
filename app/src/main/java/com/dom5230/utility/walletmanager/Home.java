@@ -1,7 +1,6 @@
 package com.dom5230.utility.walletmanager;
 
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -12,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -84,6 +82,16 @@ public class Home extends Fragment {
 
         populateListView();
 
+        ArrayList<String> dates = helper.getDates(getContext());
+
+        for(int i =0 ;i <dates.size();i++){
+            Log.d("Unique Date :", dates.get(i));
+        }
+
+        String date = dates.get(0);
+        ArrayList<String> days = helper.getDayFromDate(getContext(), date);
+        Log.d("Days Size: ", String.valueOf(days.size()));
+
         return view;
     }
 
@@ -124,9 +132,11 @@ public class Home extends Fragment {
 
     public void populateListView(){
         items = helper.getRecentTwoRows(getContext());
-        historyAdapter = new TransactionHistoryAdapter(getActivity(), items);
-        lvLastFiveTransactions.setAdapter(historyAdapter);
-        if(!historyAdapter.isEmpty()){
+        recentTransactionAdapter recentTransactionAdapter = new recentTransactionAdapter(getActivity(), items);
+        lvLastFiveTransactions.setAdapter(recentTransactionAdapter);
+//        historyAdapter = new TransactionHistoryAdapter(getActivity(), items);
+//        lvLastFiveTransactions.setAdapter(historyAdapter);
+        if(!recentTransactionAdapter.isEmpty()){
             lvLastFiveTransactions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
