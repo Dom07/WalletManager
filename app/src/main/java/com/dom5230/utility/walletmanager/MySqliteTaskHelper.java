@@ -153,14 +153,6 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         return total;
     }
 
-    public int getNumberOfTransactionsDoneToday(Context context) {
-        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
-        db = sqliteTaskHelperInstance.getReadableDatabase();
-        int total = 0;
-        String TodaysDate = getTodaysDate();
-        Cursor cursor = db.query(table.TABLE_NAME, new String[]{table.AMOUNT}, table.DATE + "=?", new String[]{TodaysDate}, null, null, null);
-        return cursor.getCount();
-    }
 
     public String getTodaysDate() {
         Calendar calendar = Calendar.getInstance();
@@ -188,7 +180,7 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         ArrayList<String> dates = new ArrayList<>();
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT DISTINCT " + table.DATE + " FROM " + table.TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("SELECT DISTINCT " + table.DATE + " FROM " + table.TABLE_NAME +" ORDER BY "+table.DATE+" DESC", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             dates.add(cursor.getString(0));
@@ -197,17 +189,6 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         return dates;
     }
 
-    public ArrayList<String> getDayFromDate(Context context, String date) {
-        ArrayList<String> days = new ArrayList<>();
-        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
-        db = sqliteTaskHelperInstance.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT "+table.DAY_OF_WEEK+" FROM "+table.TABLE_NAME+" WHERE "+ table.DATE+" = 18/7/2018", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            days.add(cursor.getString(0));
-            cursor.moveToNext();
-        }
-        return  days;
-    }
+
 
 }

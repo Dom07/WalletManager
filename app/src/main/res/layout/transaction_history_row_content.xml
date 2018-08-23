@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:orientation="horizontal"
     android:padding="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:textSize="18dp"
+        android:layout_marginLeft="50dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
         android:id="@+id/tvPerItemCategory"
         android:text="Food"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:textSize="18sp"
+        android:layout_below="@+id/tvPerItemCategory"
         android:id="@+id/tvPerItemTime"
         android:layout_marginLeft="50dp"
         android:text="9:00 am"
@@ -21,14 +23,17 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:textSize="20sp"
+        android:layout_toRightOf="@id/tvPerItemTime"
+        android:layout_centerVertical="true"
+        android:textSize="18sp"
         android:textColor="@color/colorGreen"
         android:id="@+id/tvPerItemAmount"
         android:textStyle="bold"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="100dp"
         android:text="Rs. 100"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 
     <!--TextView
         android:layout_centerVertical="true"
@@ -82,4 +87,4 @@
         android:id="@+id/TVDayOfWeek"
         android:text="Sunday"
         android:textSize="15sp"/-->
-</LinearLayout>
+</RelativeLayout>

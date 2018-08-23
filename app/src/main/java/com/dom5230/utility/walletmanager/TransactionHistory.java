@@ -51,9 +51,9 @@ public class TransactionHistory extends Fragment {
 
     public void fillHashMap(ArrayList<String> dates){
         ArrayList<TransactionRecord> records = sqliteTaskHelper.getRowsAsArrayListObjects(getContext());
-        for(int i = 0; i <dates.size(); i++){
+        for(int i = dates.size()-1; i >=0; i--){
             ArrayList<TransactionRecord> confirmedRecords = new ArrayList<>();
-            for(int j = 0 ; j < records.size(); j++){
+            for(int j = records.size()-1; j>=0; j--){
                 TransactionRecord record = records.get(j);
                 if(dates.get(i).equals(record.getDate())){
                     confirmedRecords.add(record);
