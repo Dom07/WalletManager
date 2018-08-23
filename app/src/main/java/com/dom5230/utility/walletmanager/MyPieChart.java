@@ -15,8 +15,18 @@ public class MyPieChart {
     public ArrayList<PieEntry> preparePieData(){
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
-        ArrayList<TransactionRecord> records = helper.getRowsAsArrayListObjects(context);
+        ArrayList<TransactionRecord> temprecords = helper.getRowsAsArrayListObjects(context);
         ArrayList<String> categories = helper.getCategoriesList(context);
+        String date = helper.getTodaysDate();
+
+        ArrayList<TransactionRecord> records = new ArrayList<>();
+        for(int i = 0 ; i < temprecords.size(); i++){
+            TransactionRecord record = temprecords.get(i);
+            if(record.getDate().equals(date)){
+                records.add(record);
+            }
+        }
+
         int[] total = new int[categories.size()];
 
         for(int i = 0; i < records.size();i++){

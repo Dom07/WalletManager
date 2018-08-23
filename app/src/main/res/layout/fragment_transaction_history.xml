@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context="com.dom5230.utility.walletmanager.TransactionHistory">
 
     <!-- TODO: Update blank fragment layout -->
@@ -9,11 +9,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/lvTransactionsHistory"
+        <ExpandableListView
+            android:id="@+id/elvTransactionHistory"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
-        </ListView>
+        </ExpandableListView>
     </RelativeLayout>
 
 </FrameLayout>

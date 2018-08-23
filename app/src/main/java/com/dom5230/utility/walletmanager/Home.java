@@ -82,15 +82,16 @@ public class Home extends Fragment {
 
         populateListView();
 
-        ArrayList<String> dates = helper.getDates(getContext());
-
-        for(int i =0 ;i <dates.size();i++){
-            Log.d("Unique Date :", dates.get(i));
-        }
-
-        String date = dates.get(0);
-        ArrayList<String> days = helper.getDayFromDate(getContext(), date);
-        Log.d("Days Size: ", String.valueOf(days.size()));
+//        ArrayList<String> dates = helper.getDates(getContext());
+//
+//        for(int i =0 ;i <dates.size();i++){
+//            Log.d("Unique Date :", dates.get(i));
+//        }
+//
+//
+//        String date = dates.get(0);
+//        ArrayList<String> days = helper.getDayFromDate(getContext(), date);
+//        Log.d("Days Size: ", String.valueOf(days.size()));
 
         return view;
     }
@@ -110,8 +111,6 @@ public class Home extends Fragment {
 
         ArrayList<String> categoriesList = helper.getCategoriesList(getContext());
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoriesList);
-//        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.category , android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
         mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -165,11 +164,15 @@ public class Home extends Fragment {
 
     public void updateAverageSalary(){
         int average = 0;
-        int total = helper.getExpensesForToday(getContext());
-        int getCount = helper.getNumberOfTransactionsDoneToday(getContext());
-        if(getCount != 0){
-            average = total/getCount;
+        int total = 0;
+        ArrayList<TransactionRecord> records = helper.getRowsAsArrayListObjects(getContext());
+        for(int i = 0; i < records.size(); i++){
+            TransactionRecord record = records.get(i);
+            total = total + Integer.parseInt(record.getAmouont());
         }
+
+        average = total / records.size();
+
         averageSpendings.setText("Rs. "+average);
     }
 
@@ -191,6 +194,7 @@ public class Home extends Fragment {
             pieChart.setDescription(description);
 
             pieChart.setEntryLabelColor(Color.BLUE);
+            pieChart.setEntryLabelTextSize(10);
             pieChart.setData(data);
 
             pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {

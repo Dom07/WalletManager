@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.github.mikephil.charting.data.PieEntry;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -24,11 +22,11 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
     private CategoryTable categoryTable = new CategoryTable();
 
     public MySqliteTaskHelper(Context context) {
-        super(context, "transaction.db",null,1);
+        super(context, "transaction.db", null, 1);
     }
 
-    public static MySqliteTaskHelper getInstance(Context context){
-        if(sqliteTaskHelperInstance == null){
+    public static MySqliteTaskHelper getInstance(Context context) {
+        if (sqliteTaskHelperInstance == null) {
             sqliteTaskHelperInstance = new MySqliteTaskHelper(context);
         }
         return sqliteTaskHelperInstance;
@@ -42,29 +40,29 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS "+table.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS "+categoryTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + table.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + categoryTable.TABLE_NAME);
         onCreate(db);
     }
 
 
-//  Insert Queries here
-    public void insertCategories(Context context){
+    //  Insert Queries here
+    public void insertCategories(Context context) {
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
-        SQLiteDatabase db =  helper.getWritableDatabase();
-        String[] categories = new String[]{"Food","Bills", "Travel", "Shopping", "Entertainment"};
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String[] categories = new String[]{"Food", "Bills", "Travel", "Shopping", "Entertainment"};
         ContentValues values = new ContentValues();
-        for(int i = 0; i<categories.length;i++){
+        for (int i = 0; i < categories.length; i++) {
             values.put(categoryTable.CATEGORY, categories[i]);
             long row = db.insert(categoryTable.TABLE_NAME, null, values);
             values.clear();
-            Log.i("Categories row:",String.valueOf(row));
+            Log.i("Categories row:", String.valueOf(row));
         }
     }
 
-    public void insertRecord(Context context, String amount, String category){
+    public void insertRecord(Context context, String amount, String category) {
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
-        SQLiteDatabase db =  helper.getWritableDatabase();
+        SQLiteDatabase db = helper.getWritableDatabase();
 
         Calendar calendar = Calendar.getInstance();
 
@@ -76,33 +74,33 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         int year = calendar.get(Calendar.YEAR);
 
         int dayofWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        String[] daysofweek = new String[]{"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+        String[] daysofweek = new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
         ContentValues values = new ContentValues();
-        values.put(table.DATE, String.valueOf(date+"/"+month+"/"+year));
-        values.put(table.TIME, String.valueOf(hour+":"+minutes));
-        values.put(table.DAY_OF_WEEK, daysofweek[dayofWeek-1]);
+        values.put(table.DATE, String.valueOf(date + "/" + month + "/" + year));
+        values.put(table.TIME, String.valueOf(hour + ":" + minutes));
+        values.put(table.DAY_OF_WEEK, daysofweek[dayofWeek - 1]);
         values.put(table.CATEGORY, category);
         values.put(table.AMOUNT, amount);
         long row = db.insert(table.TABLE_NAME, null, values);
-        Log.i("SQL INSERT",String.valueOf(row));
+        Log.i("SQL INSERT", String.valueOf(row));
     }
 
-//  Fetch data queries here
-    public ArrayList<TransactionRecord> getRowsAsArrayListObjects(Context context){
+    //  Fetch data queries here
+    public ArrayList<TransactionRecord> getRowsAsArrayListObjects(Context context) {
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
-        Cursor cursor = db.query(table.TABLE_NAME, new String[]{"*"},null, null, null, null,null);
+        Cursor cursor = db.query(table.TABLE_NAME, new String[]{"*"}, null, null, null, null, null);
         int row = cursor.getCount();
         ArrayList<TransactionRecord> arrayListItems = new ArrayList<TransactionRecord>();
         cursor.moveToFirst();
-        for(int i = 0; i<row;i++){
+        for (int i = 0; i < row; i++) {
             String date = cursor.getString(1);
             String time = cursor.getString(2);
             String dayOfWeek = cursor.getString(3);
             String category = cursor.getString(4);
             String amount = cursor.getString(5);
-            TransactionRecord item = new TransactionRecord(date,time,dayOfWeek,category,amount);
+            TransactionRecord item = new TransactionRecord(date, time, dayOfWeek, category, amount);
             arrayListItems.add(item);
             cursor.moveToNext();
         }
@@ -110,44 +108,44 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<TransactionRecord> getRecentTwoRows(Context context){
+    public ArrayList<TransactionRecord> getRecentTwoRows(Context context) {
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
 
         // using this counter so our for loop only runs 2 times
         int counter = 0;
 
-        Cursor cursor = db.query(table.TABLE_NAME, new String[]{"*"},null, null, null, null,null);
+        Cursor cursor = db.query(table.TABLE_NAME, new String[]{"*"}, null, null, null, null, null);
         int row = cursor.getCount();
 
         ArrayList<TransactionRecord> arrayListItems = new ArrayList<TransactionRecord>();
         cursor.moveToLast();
 
-        for(int i = row; i > 0; i--){
+        for (int i = row; i > 0; i--) {
             String date = cursor.getString(1);
             String time = cursor.getString(2);
             String dayOfWeek = cursor.getString(3);
             String category = cursor.getString(4);
             String amount = cursor.getString(5);
-            TransactionRecord item = new TransactionRecord(date,time,dayOfWeek,category,amount);
+            TransactionRecord item = new TransactionRecord(date, time, dayOfWeek, category, amount);
             arrayListItems.add(item);
-            if(counter == 1){
+            if (counter == 1) {
                 break;
             }
             counter++;
             cursor.moveToPrevious();
         }
-        return  arrayListItems;
+        return arrayListItems;
     }
 
-    public int getExpensesForToday(Context context){
+    public int getExpensesForToday(Context context) {
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
         int total = 0;
         String TodaysDate = getTodaysDate();
-        Cursor cursor = db.query(table.TABLE_NAME,new String[]{table.AMOUNT},table.DATE+"=?",new String[]{TodaysDate},null,null,null);
+        Cursor cursor = db.query(table.TABLE_NAME, new String[]{table.AMOUNT}, table.DATE + "=?", new String[]{TodaysDate}, null, null, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             String amount = cursor.getString(0);
             total = total + Integer.parseInt(amount);
             cursor.moveToNext();
@@ -155,26 +153,61 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         return total;
     }
 
-    public String getTodaysDate(){
+    public int getNumberOfTransactionsDoneToday(Context context) {
+        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+        db = sqliteTaskHelperInstance.getReadableDatabase();
+        int total = 0;
+        String TodaysDate = getTodaysDate();
+        Cursor cursor = db.query(table.TABLE_NAME, new String[]{table.AMOUNT}, table.DATE + "=?", new String[]{TodaysDate}, null, null, null);
+        return cursor.getCount();
+    }
+
+    public String getTodaysDate() {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DATE);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
-        String date = day+"/"+month+"/"+year;
+        String date = day + "/" + month + "/" + year;
         return date;
     }
 
-    public ArrayList<String> getCategoriesList(Context context){
+    public ArrayList<String> getCategoriesList(Context context) {
         ArrayList<String> categories = new ArrayList<>();
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
         Cursor cursor = db.query(categoryTable.TABLE_NAME, new String[]{categoryTable.CATEGORY}, null, null, null, null, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             categories.add(cursor.getString(0));
             cursor.moveToNext();
         }
         return categories;
+    }
+
+    public ArrayList<String> getDates(Context context) {
+        ArrayList<String> dates = new ArrayList<>();
+        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+        db = sqliteTaskHelperInstance.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT DISTINCT " + table.DATE + " FROM " + table.TABLE_NAME, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            dates.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        return dates;
+    }
+
+    public ArrayList<String> getDayFromDate(Context context, String date) {
+        ArrayList<String> days = new ArrayList<>();
+        sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
+        db = sqliteTaskHelperInstance.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT "+table.DAY_OF_WEEK+" FROM "+table.TABLE_NAME+" WHERE "+ table.DATE+" = 18/7/2018", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            days.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        return  days;
     }
 
 }

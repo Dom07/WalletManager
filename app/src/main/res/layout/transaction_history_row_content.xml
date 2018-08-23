@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
+<LinearLayout
+    android:orientation="horizontal"
     android:padding="10dp"
-    android:layout_margin="10dp">
-
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
+        android:textSize="18dp"
+        android:id="@+id/tvPerItemCategory"
+        android:text="Food"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="18sp"
+        android:id="@+id/tvPerItemTime"
+        android:layout_marginLeft="50dp"
+        android:text="9:00 am"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="20sp"
+        android:textColor="@color/colorGreen"
+        android:id="@+id/tvPerItemAmount"
+        android:textStyle="bold"
+        android:layout_marginLeft="50dp"
+        android:text="Rs. 100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--TextView
         android:layout_centerVertical="true"
         android:textStyle="bold"
         android:text="Rs.100"
@@ -57,5 +81,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/TVDayOfWeek"
         android:text="Sunday"
-        android:textSize="15sp"/>
-</RelativeLayout>
+        android:textSize="15sp"/-->
+</LinearLayout>
