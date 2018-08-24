@@ -15,7 +15,15 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_below="@+id/tvPerItemCategory"
+        android:layout_marginLeft="50dp"
+        android:layout_below="@id/tvPerItemCategory"
+        android:id="@+id/tvPerItemDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descriprtion"/>
+
+    <TextView
+        android:layout_below="@+id/tvPerItemDescription"
         android:id="@+id/tvPerItemTime"
         android:layout_marginLeft="50dp"
         android:text="9:00 am"

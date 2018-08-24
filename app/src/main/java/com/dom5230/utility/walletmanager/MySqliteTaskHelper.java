@@ -60,7 +60,7 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertRecord(Context context, String amount, String category) {
+    public void insertRecord(Context context, String amount, String category, String description) {
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
         SQLiteDatabase db = helper.getWritableDatabase();
 
@@ -82,6 +82,7 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         values.put(table.DAY_OF_WEEK, daysofweek[dayofWeek - 1]);
         values.put(table.CATEGORY, category);
         values.put(table.AMOUNT, amount);
+        values.put(table.DESCRIPTION, description);
         long row = db.insert(table.TABLE_NAME, null, values);
         Log.i("SQL INSERT", String.valueOf(row));
     }
@@ -100,7 +101,8 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
             String dayOfWeek = cursor.getString(3);
             String category = cursor.getString(4);
             String amount = cursor.getString(5);
-            TransactionRecord item = new TransactionRecord(date, time, dayOfWeek, category, amount);
+            String description = cursor.getString(6);
+            TransactionRecord item = new TransactionRecord(date, time, dayOfWeek, category, amount, description);
             arrayListItems.add(item);
             cursor.moveToNext();
         }
@@ -127,7 +129,8 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
             String dayOfWeek = cursor.getString(3);
             String category = cursor.getString(4);
             String amount = cursor.getString(5);
-            TransactionRecord item = new TransactionRecord(date, time, dayOfWeek, category, amount);
+            String description = cursor.getString(6);
+            TransactionRecord item = new TransactionRecord(date, time, dayOfWeek, category, amount, description);
             arrayListItems.add(item);
             if (counter == 1) {
                 break;
@@ -138,16 +141,16 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         return arrayListItems;
     }
 
-    public int getExpensesForToday(Context context) {
+    public float getExpensesForToday(Context context) {
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
-        int total = 0;
+        float total = 0;
         String TodaysDate = getTodaysDate();
         Cursor cursor = db.query(table.TABLE_NAME, new String[]{table.AMOUNT}, table.DATE + "=?", new String[]{TodaysDate}, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String amount = cursor.getString(0);
-            total = total + Integer.parseInt(amount);
+            total = total + Float.valueOf(amount);
             cursor.moveToNext();
         }
         return total;

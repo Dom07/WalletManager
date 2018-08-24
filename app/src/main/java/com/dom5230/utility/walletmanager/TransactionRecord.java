@@ -5,14 +5,15 @@ package com.dom5230.utility.walletmanager;
  */
 
 public class TransactionRecord {
-    private String Date, Time, DayOfWeek, Category, Amouont;
+    private String Date, Time, DayOfWeek, Category, Amouont, Description;
 
-    public TransactionRecord(String Date, String Time, String DayOFWeek, String Category, String Amount){
+    public TransactionRecord(String Date, String Time, String DayOFWeek, String Category, String Amount, String Description){
         this.Date = Date;
         this.Time = Time;
         this.DayOfWeek = DayOFWeek;
         this.Category = Category;
         this.Amouont = Amount;
+        this.Description = Description;
     }
 
 
@@ -34,5 +35,9 @@ public class TransactionRecord {
 
     public String getAmouont() {
         return Amouont;
+    }
+
+    public String getDescription(){
+        return Description;
     }
 }

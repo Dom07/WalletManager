@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class recentTransactionAdapter extends ArrayAdapter {
     Activity context;
     ArrayList<TransactionRecord> transactionRecorditems;
-    TextView tvCategory, tvTime, tvAmount;
+    TextView tvCategory, tvDescription, tvAmount;
     TransactionRecord transactionRecorditem;
 
     public recentTransactionAdapter(Activity context, ArrayList<TransactionRecord> transactionRecorditems){
@@ -31,12 +31,12 @@ public class recentTransactionAdapter extends ArrayAdapter {
         transactionRecorditem = transactionRecorditems.get(position);
 
         tvCategory = rowView.findViewById(R.id.tvCategory);
-        tvTime = rowView.findViewById(R.id.tvTime);
+        tvDescription = rowView.findViewById(R.id.tvDescription);
         tvAmount = rowView.findViewById(R.id.tvAmount);
 
         tvCategory.setText(transactionRecorditem.getCategory());
-        tvTime.setText(transactionRecorditem.getTime());
-        tvAmount.setText("Rs. "+transactionRecorditem.getAmouont());
+        tvDescription.setText(transactionRecorditem.getDescription());
+        tvAmount.setText(getContext().getResources().getString(R.string.dollar)+" "+transactionRecorditem.getAmouont());
 
 //        tvRecentAmount = rowView.findViewById(R.id.tvRecentAmount);
 //        tvRecentCategory = rowView.findViewById(R.id.tvRecentCategory);

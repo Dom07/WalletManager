@@ -72,7 +72,7 @@ public class RecentTransactionExpListViewAdapter extends BaseExpandableListAdapt
 
         transactionDate.setText(record.getDate());
         transactionDay.setText(record.getDayOfWeek());
-        transactionTotalAmount.setText("Rs. "+String.valueOf(getTotalAmount(records)));
+        transactionTotalAmount.setText(context.getResources().getString(R.string.dollar)+" "+String.valueOf(getTotalAmount(records)));
 
         return view;
     }
@@ -88,11 +88,13 @@ public class RecentTransactionExpListViewAdapter extends BaseExpandableListAdapt
 
         TextView transactionCategory = view.findViewById(R.id.tvPerItemCategory);
         TextView transactionTime = view.findViewById(R.id.tvPerItemTime);
+        TextView transactionDescription = view.findViewById(R.id.tvPerItemDescription);
         TextView transactionAmount = view.findViewById(R.id.tvPerItemAmount);
 
         transactionCategory.setText(record.getCategory());
         transactionTime.setText(record.getTime());
-        transactionAmount.setText("Rs. "+record.getAmouont());
+        transactionDescription.setText(record.getDescription());
+        transactionAmount.setText(context.getResources().getString(R.string.dollar)+" "+record.getAmouont());
         return view;
     }
 
@@ -101,11 +103,11 @@ public class RecentTransactionExpListViewAdapter extends BaseExpandableListAdapt
         return false;
     }
 
-    public int getTotalAmount(ArrayList<TransactionRecord> records){
-        int total = 0;
+    public float getTotalAmount(ArrayList<TransactionRecord> records){
+        float total = 0;
         for(int i =0; i <records.size();i++){
             TransactionRecord record = records.get(i);
-            total = total + Integer.parseInt(record.getAmouont());
+            total = total + Float.valueOf(record.getAmouont());
         }
         return total;
     }

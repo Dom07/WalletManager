@@ -82,17 +82,6 @@ public class Home extends Fragment {
 
         populateListView();
 
-//        ArrayList<String> dates = helper.getDates(getContext());
-//
-//        for(int i =0 ;i <dates.size();i++){
-//            Log.d("Unique Date :", dates.get(i));
-//        }
-//
-//
-//        String date = dates.get(0);
-//        ArrayList<String> days = helper.getDayFromDate(getContext(), date);
-//        Log.d("Days Size: ", String.valueOf(days.size()));
-
         return view;
     }
 
@@ -108,6 +97,7 @@ public class Home extends Fragment {
 
         final EditText ETAmount = mview.findViewById(R.id.ETAmount);
         final Spinner spinner = mview.findViewById(R.id.SpinnerCategory);
+        final EditText ETDescription = mview.findViewById(R.id.etDescription);
 
         ArrayList<String> categoriesList = helper.getCategoriesList(getContext());
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoriesList);
@@ -116,7 +106,7 @@ public class Home extends Fragment {
         mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                helper.insertRecord(getContext(), ETAmount.getText().toString(),spinner.getSelectedItem().toString());
+                helper.insertRecord(getContext(), ETAmount.getText().toString(),spinner.getSelectedItem().toString(), ETDescription.getText().toString());
                 populateListView();
                 updateUIData();
             }
@@ -159,21 +149,28 @@ public class Home extends Fragment {
     }
 
     public void updateTodaysExpense(){
-        SpendingsForToday.setText("₹ "+String.valueOf(helper.getExpensesForToday(getContext())));
+        float expsesForToday = 0;
+        float dbValue = helper.getExpensesForToday(getContext());
+        if(dbValue != 0){
+            expsesForToday = dbValue;
+        }
+        SpendingsForToday.setText(getResources().getString(R.string.dollar)+" "+expsesForToday);
     }
 
     public void updateAverageSalary(){
-        int average = 0;
-        int total = 0;
+        float average = 0;
+        float total = 0;
         ArrayList<TransactionRecord> records = helper.getRowsAsArrayListObjects(getContext());
         for(int i = 0; i < records.size(); i++){
             TransactionRecord record = records.get(i);
-            total = total + Integer.parseInt(record.getAmouont());
+            total = total + Float.valueOf(record.getAmouont());
         }
 
-        average = total / records.size();
+        if(total != 0) {
+            average = total / records.size();
+        }
 
-        averageSpendings.setText("Rs. "+average);
+        averageSpendings.setText(getResources().getString(R.string.dollar)+" "+average);
     }
 
     public void setPieChart(){
@@ -213,7 +210,7 @@ public class Home extends Fragment {
 
     public void setPieCenterText(Entry e){
         PieEntry pieEntry = (PieEntry)e;
-        pieChart.setCenterText(pieEntry.getLabel()+": ₹"+(int)pieEntry.getValue());
+        pieChart.setCenterText(pieEntry.getLabel()+": "+getResources().getString(R.string.dollar)+" "+pieEntry.getValue());
         pieChart.setCenterTextSize(15f);
         pieChart.setCenterTextColor(Color.BLUE);
     }

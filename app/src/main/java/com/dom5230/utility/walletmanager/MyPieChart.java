@@ -27,13 +27,13 @@ public class MyPieChart {
             }
         }
 
-        int[] total = new int[categories.size()];
+        float[] total = new float[categories.size()];
 
         for(int i = 0; i < records.size();i++){
             TransactionRecord record = records.get(i);
                 for(int count = 0; count<categories.size(); count++){
                     if(categories.get(count).equals(record.getCategory())){
-                        total[count]+=Integer.parseInt(record.getAmouont());
+                        total[count]+=Float.valueOf(record.getAmouont());
                     }
                 }
         }
