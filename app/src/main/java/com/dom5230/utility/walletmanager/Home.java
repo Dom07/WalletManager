@@ -28,6 +28,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Home extends Fragment {
@@ -158,18 +160,19 @@ public class Home extends Fragment {
     }
 
     public void updateAverageSalary(){
-        float average = 0;
-        float total = 0;
+        double average = 0;
+        double total = 0;
         ArrayList<TransactionRecord> records = helper.getRowsAsArrayListObjects(getContext());
         for(int i = 0; i < records.size(); i++){
             TransactionRecord record = records.get(i);
-            total = total + Float.valueOf(record.getAmouont());
+            total = total + Double.valueOf(record.getAmouont());
         }
 
         if(total != 0) {
             average = total / records.size();
+            DecimalFormat df = new DecimalFormat("0.00");
+            average = Double.parseDouble(df.format(average));
         }
-
         averageSpendings.setText(getResources().getString(R.string.dollar)+" "+average);
     }
 
