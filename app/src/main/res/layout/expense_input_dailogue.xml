@@ -4,53 +4,72 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enter Amount:"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorBlack"/>
-
-    <EditText
-        android:layout_marginLeft="25dp"
-        android:inputType="numberDecimal"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/ETAmount" />
-
-    <TextView
-        android:layout_marginLeft="25dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Category:"
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold"
-        android:textSize="20dp"/>
-
-    <Spinner
-        android:layout_marginTop="3dp"
-        android:id="@+id/SpinnerCategory"
-        android:layout_marginLeft="25dp"
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </Spinner>
 
-    <TextView
+        <TextView
+            android:layout_marginLeft="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter Amount:"
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+
+        <EditText
+            android:hint="$0.00"
+            android:textAlignment="viewEnd"
+            android:gravity="right"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="30dp"
+            android:inputType="numberDecimal"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ETAmount" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:textStyle="bold"
-        android:textSize="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:text="Category:"
+            android:textColor="@color/colorBlack"
+            android:textSize="15dp" />
+
+        <Spinner
+            android:id="@+id/SpinnerCategory"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="1dp" />
+
+    </LinearLayout>
+
+
+    <!--TextView
+        android:layout_marginTop="10dp"
+        android:textSize="15dp"
         android:textColor="@color/colorBlack"
         android:layout_marginLeft="25dp"
         android:text="Description:"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" /-->
 
     <EditText
+        android:hint="Enter Description"
         android:id="@+id/etDescription"
         android:layout_marginLeft="25dp"
-        android:layout_width="200dp"
+        android:layout_width="230dp"
+        android:textSize="20sp"
         android:layout_height="wrap_content" />
+
 </LinearLayout>
