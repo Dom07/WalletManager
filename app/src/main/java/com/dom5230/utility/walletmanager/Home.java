@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -46,6 +50,7 @@ public class Home extends Fragment {
     TextView SpendingsForToday;
     TextView averageSpendings;
     PieChart pieChart;
+
 
     @Nullable
     @Override
@@ -100,6 +105,9 @@ public class Home extends Fragment {
         final EditText ETAmount = mview.findViewById(R.id.ETAmount);
         final Spinner spinner = mview.findViewById(R.id.SpinnerCategory);
         final EditText ETDescription = mview.findViewById(R.id.etDescription);
+        TextView tvDescriptionCounter = mview.findViewById(R.id.tvDescriptionCount);
+
+        updateDescriptionCount(ETDescription, tvDescriptionCounter);
 
         ArrayList<String> categoriesList = helper.getCategoriesList(getContext());
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoriesList);
@@ -116,7 +124,7 @@ public class Home extends Fragment {
 
         mBuilder.setNegativeButton("Cancel", null);
         mBuilder.setView(mview);
-        mBuilder.setTitle("Expenditure Details");
+        mBuilder.setTitle("Enter Details");
         AlertDialog dialog = mBuilder.create();
         dialog.show();
     }
@@ -216,5 +224,28 @@ public class Home extends Fragment {
         pieChart.setCenterText(pieEntry.getLabel()+": "+getResources().getString(R.string.dollar)+" "+pieEntry.getValue());
         pieChart.setCenterTextSize(15f);
         pieChart.setCenterTextColor(Color.BLUE);
+    }
+
+    public void updateDescriptionCount(EditText editText, final TextView textView){
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                textView.setText(String.valueOf(charSequence.length())+"/30");
+                if(charSequence.length() == 30){
+                    Toast.makeText(getContext(), "You cannot enter anymore characters.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+        editText.addTextChangedListener(textWatcher);
     }
 }
