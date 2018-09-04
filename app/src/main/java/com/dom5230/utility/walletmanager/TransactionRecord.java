@@ -16,7 +16,6 @@ public class TransactionRecord {
         this.Description = Description;
     }
 
-
     public String getDate() {
         return Date;
     }
@@ -39,5 +38,30 @@ public class TransactionRecord {
 
     public String getDescription(){
         return Description;
+    }
+
+    public String getTimeInAmPmFormat(){
+        String time = getTime();
+        int hour, min;
+        Boolean am = false;
+        String[] seperatedTime;
+        seperatedTime = time.split(":");
+        hour = Integer.parseInt(seperatedTime[0]);
+        min = Integer.parseInt(seperatedTime[1]);
+
+        if(hour < 12){
+            am = true;
+        }
+
+        if(am.equals(false) && hour > 12){
+            hour = hour - 12;
+        }
+
+        if(am){
+            time = hour+":"+min+" AM";
+        }else{
+            time = hour+":"+min+" PM";
+        }
+        return time;
     }
 }

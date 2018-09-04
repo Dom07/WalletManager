@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,11 +53,10 @@ public class Home extends Fragment {
     TextView averageSpendings;
     PieChart pieChart;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        final View view = inflater.inflate(R.layout.fragment_home, container, false);
         sharedPreferences = getActivity().getSharedPreferences("com.dom5230.utility.walletmanager", Context.MODE_PRIVATE);
         Boolean checkFirstRun = sharedPreferences.getBoolean("FirstRun", true);
         Log.i("First Run:",String.valueOf(checkFirstRun));
@@ -100,7 +101,6 @@ public class Home extends Fragment {
     public void expenseAlertBox(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         View mview = getLayoutInflater().inflate(R.layout.expense_input_dailogue,null);
-
 
         final EditText ETAmount = mview.findViewById(R.id.ETAmount);
         final Spinner spinner = mview.findViewById(R.id.SpinnerCategory);
@@ -164,6 +164,8 @@ public class Home extends Fragment {
         if(dbValue != 0){
             expsesForToday = dbValue;
         }
+        DecimalFormat df = new DecimalFormat("0.00");
+        expsesForToday = Float.parseFloat(df.format(expsesForToday));
         SpendingsForToday.setText(getResources().getString(R.string.dollar)+" "+expsesForToday);
     }
 
@@ -198,7 +200,7 @@ public class Home extends Fragment {
             data.setDrawValues(false);
 
             Description description = new Description();
-            description.setText("Categories");
+            description.setText("");
             pieChart.setDescription(description);
 
             pieChart.setEntryLabelColor(Color.BLUE);
@@ -208,6 +210,10 @@ public class Home extends Fragment {
             pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(Entry e, Highlight h) {
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    Float getValue = e.getY();
+                    getValue = Float.valueOf(df.format(getValue));
+                    e.setY(getValue);
                     setPieCenterText(e);
                 }
 

@@ -13,30 +13,44 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    ImageView ivRecentTransaction;
+    ImageView ivHome;
+    ImageView ivAssessment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ivRecentTransaction = findViewById(R.id.ivRecentTransaction);
+        ivHome = findViewById(R.id.ivHome);
+        ivAssessment = findViewById(R.id.ivAssessment);
+
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, new Home());
         ft.commit();
+        ivHome.setImageResource(R.drawable.ic_home_highlighted_24dp);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -95,4 +109,30 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public boolean onBottomItemSelected(View view){
+        int viewId = view.getId();
+        switch (viewId){
+            case R.id.ivRecentTransaction:{
+                android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new TransactionHistory());
+                ft.commit();
+                ivRecentTransaction.setImageResource(R.drawable.ic_history_highlighted_24dp);
+                ivHome.setImageResource(R.drawable.ic_home_black_24dp);
+                break;
+            }
+
+            case R.id.ivHome:{
+                android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new Home());
+                ft.commit();
+                ivHome.setImageResource(R.drawable.ic_home_highlighted_24dp);
+                ivRecentTransaction.setImageResource(R.drawable.ic_history_black_24dp);
+                break;
+            }
+        }
+        return true;
+    }
+
+
 }

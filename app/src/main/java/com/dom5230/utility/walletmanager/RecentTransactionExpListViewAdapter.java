@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,7 +21,6 @@ public class RecentTransactionExpListViewAdapter extends BaseExpandableListAdapt
         this.dates = dates;
         this.items = items;
     }
-
 
     @Override
     public int getGroupCount() {
@@ -72,8 +72,9 @@ public class RecentTransactionExpListViewAdapter extends BaseExpandableListAdapt
 
         transactionDate.setText(record.getDate());
         transactionDay.setText(record.getDayOfWeek());
-        transactionTotalAmount.setText(context.getResources().getString(R.string.dollar)+" "+String.valueOf(getTotalAmount(records)));
-
+        DecimalFormat df = new DecimalFormat("0.00");
+        Float formattedValue = Float.valueOf(df.format(getTotalAmount(records)));
+        transactionTotalAmount.setText(context.getResources().getString(R.string.dollar)+" "+String.valueOf(formattedValue));
         return view;
     }
 
@@ -92,7 +93,7 @@ public class RecentTransactionExpListViewAdapter extends BaseExpandableListAdapt
         TextView transactionAmount = view.findViewById(R.id.tvPerItemAmount);
 
         transactionCategory.setText(record.getCategory());
-        transactionTime.setText(record.getTime());
+        transactionTime.setText(record.getTimeInAmPmFormat());
         transactionDescription.setText(record.getDescription());
         transactionAmount.setText(context.getResources().getString(R.string.dollar)+" "+record.getAmouont());
         return view;

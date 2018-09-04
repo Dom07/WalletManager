@@ -18,7 +18,7 @@
         android:layout_marginLeft="50dp"
         android:layout_below="@id/tvPerItemCategory"
         android:id="@+id/tvPerItemDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="Descriprtion"/>
 
