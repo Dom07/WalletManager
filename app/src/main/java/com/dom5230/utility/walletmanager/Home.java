@@ -53,10 +53,12 @@ public class Home extends Fragment {
     TextView averageSpendings;
     PieChart pieChart;
 
+    View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
         sharedPreferences = getActivity().getSharedPreferences("com.dom5230.utility.walletmanager", Context.MODE_PRIVATE);
         Boolean checkFirstRun = sharedPreferences.getBoolean("FirstRun", true);
         Log.i("First Run:",String.valueOf(checkFirstRun));
@@ -116,9 +118,23 @@ public class Home extends Fragment {
         mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                helper.insertRecord(getContext(), ETAmount.getText().toString(),spinner.getSelectedItem().toString(), ETDescription.getText().toString());
+                float floatAmount;
+                String amount = String.valueOf(ETAmount.getText());
+
+                if(amount.equals("")){
+                    floatAmount = 0;
+                }else{
+                    floatAmount = Float.valueOf(amount);
+                }
+
+                if(floatAmount == 0){
+                    Toast.makeText(getContext(), "Please enter a valid amount.", Toast.LENGTH_SHORT).show();
+                }else{
+                    helper.insertRecord(getContext(), ETAmount.getText().toString(),spinner.getSelectedItem().toString(), ETDescription.getText().toString());
+                }
                 populateListView();
                 updateUIData();
+                //helper.insertNewCategory(getContext(), "Utilities");
             }
         });
 
@@ -150,6 +166,7 @@ public class Home extends Fragment {
         ft.replace(R.id.content_frame, new TransactionHistory(), "Transaction History");
         ft.addToBackStack(null);
         ft.commit();
+        highlightTransactionHistoryItemInBottomMenu();
     }
 
     private  void updateUIData(){
@@ -253,5 +270,12 @@ public class Home extends Fragment {
             }
         };
         editText.addTextChangedListener(textWatcher);
+    }
+
+    public void highlightTransactionHistoryItemInBottomMenu(){
+        ImageView ivTransactionHistory = getActivity().findViewById(R.id.ivRecentTransaction);
+        ImageView ivHome = getActivity().findViewById(R.id.ivHome);
+        ivTransactionHistory.setImageResource(R.drawable.ic_history_highlighted_24dp);
+        ivHome.setImageResource(R.drawable.ic_home_black_24dp);
     }
 }

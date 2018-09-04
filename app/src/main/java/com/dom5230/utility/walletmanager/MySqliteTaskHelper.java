@@ -60,6 +60,15 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void insertNewCategory(Context context, String categoryName){
+        MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(categoryTable.CATEGORY, categoryName);
+        long row = db.insert(categoryTable.TABLE_NAME, null, values);
+        values.clear();
+    }
+
     public void insertRecord(Context context, String amount, String category, String description) {
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -192,6 +201,13 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         return dates;
     }
 
+    // Delete queries here
+    public void removeCategory(Context context, String categoryName){
+        MySqliteTaskHelper mySqliteTaskHelper = MySqliteTaskHelper.getInstance(context);
+        db = mySqliteTaskHelper.getWritableDatabase();
+        db.delete(categoryTable.TABLE_NAME, categoryTable.CATEGORY+"=?", new String[]{categoryName});
+        db.close();
+    }
 
 
 }

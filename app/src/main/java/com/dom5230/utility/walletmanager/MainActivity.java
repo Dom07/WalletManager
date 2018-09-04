@@ -1,6 +1,8 @@
 package com.dom5230.utility.walletmanager;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,23 +23,15 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    ImageView ivRecentTransaction;
-    ImageView ivHome;
-    ImageView ivAssessment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ivRecentTransaction = findViewById(R.id.ivRecentTransaction);
-        ivHome = findViewById(R.id.ivHome);
-        ivAssessment = findViewById(R.id.ivAssessment);
-
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, new Home());
         ft.commit();
-        ivHome.setImageResource(R.drawable.ic_home_highlighted_24dp);
+        updateBottomMenu(1);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -115,24 +109,39 @@ public class MainActivity extends AppCompatActivity
         switch (viewId){
             case R.id.ivRecentTransaction:{
                 android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, new TransactionHistory());
+                TransactionHistory transactionHistory = new TransactionHistory();
+                ft.replace(R.id.content_frame, transactionHistory);
                 ft.commit();
-                ivRecentTransaction.setImageResource(R.drawable.ic_history_highlighted_24dp);
-                ivHome.setImageResource(R.drawable.ic_home_black_24dp);
+                updateBottomMenu(0);
                 break;
             }
 
             case R.id.ivHome:{
                 android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, new Home());
+                Home home = new Home();
+                ft.replace(R.id.content_frame, home);
                 ft.commit();
-                ivHome.setImageResource(R.drawable.ic_home_highlighted_24dp);
-                ivRecentTransaction.setImageResource(R.drawable.ic_history_black_24dp);
+                updateBottomMenu(1);
                 break;
             }
         }
         return true;
     }
 
+    public void updateBottomMenu(int position){
+        ImageView ivRecentTransaction = findViewById(R.id.ivRecentTransaction);
+        ImageView ivHome = findViewById(R.id.ivHome);
+        ImageView ivAssessment = findViewById(R.id.ivAssessment);
+
+        if(position == 0){
+            ivRecentTransaction.setImageResource(R.drawable.ic_history_highlighted_24dp);
+            ivHome.setImageResource(R.drawable.ic_home_black_24dp);
+        } else if (position == 1){
+            ivHome.setImageResource(R.drawable.ic_home_highlighted_24dp);
+            ivRecentTransaction.setImageResource(R.drawable.ic_history_black_24dp);
+        } else if(position == 2){
+
+        }
+    }
 
 }
