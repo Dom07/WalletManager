@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -20,12 +21,14 @@ public class TransactionHistory extends Fragment {
     HashMap<String, ArrayList<TransactionRecord>> items;
     MySqliteTaskHelper sqliteTaskHelper;
 
+    TextView tvNoData;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transaction_history, container, false);
 
+        tvNoData = view.findViewById(R.id.tvNoData);
         sqliteTaskHelper = MySqliteTaskHelper.getInstance(getContext());
         dates = new ArrayList<>();
         items = new HashMap<>();
@@ -36,12 +39,7 @@ public class TransactionHistory extends Fragment {
         ExpandableListView expandableListView = view.findViewById(R.id.elvTransactionHistory);
         RecentTransactionExpListViewAdapter adapter = new RecentTransactionExpListViewAdapter(getContext(), dates, items);
         expandableListView.setAdapter(adapter);
-
-        //        MySqliteTaskHelper helper = new MySqliteTaskHelper(getContext());
-//        ArrayList<String> dates = helper.getDates(getContext());
-//        TransactionHistoryAdapter adapter = new TransactionHistoryAdapter(getActivity(),dates);
-//        ListView listView = view.findViewById(R.id.lvTransactionsHistory);
-//        listView.setAdapter(adapter);
+        updateTextViewVisibilityIfNoData();
         return view;
     }
 
@@ -65,7 +63,14 @@ public class TransactionHistory extends Fragment {
         }
     }
 
-
+    public void updateTextViewVisibilityIfNoData(){
+        ArrayList<String> itemDates = sqliteTaskHelper.getDates(getContext());
+        if(itemDates.size() == 0){
+            tvNoData.setVisibility(View.VISIBLE);
+        }else{
+            tvNoData.setVisibility(View.INVISIBLE);
+        }
+    }
 
 
 }

@@ -67,6 +67,7 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         values.put(categoryTable.CATEGORY, categoryName);
         long row = db.insert(categoryTable.TABLE_NAME, null, values);
         values.clear();
+        Log.d("New Category Added:", categoryName);
     }
 
     public void insertRecord(Context context, String amount, String category, String description) {
