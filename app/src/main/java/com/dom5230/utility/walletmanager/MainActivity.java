@@ -1,7 +1,9 @@
 package com.dom5230.utility.walletmanager;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -71,9 +75,17 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_add_category: {
+                addNewCategoryAlertBox();
+                break;
+            }
+            case R.id.action_manage_categories:{
+                android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new ManageCategories());
+                ft.commit();
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -143,5 +155,28 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
+
+    public void addNewCategoryAlertBox(){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        View mview = getLayoutInflater().inflate(R.layout.dialogue_add_new_category,null);
+
+        final EditText etAddNewCategory = mview.findViewById(R.id.etNewCategory);
+
+        mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String category = etAddNewCategory.getText().toString().trim();
+                MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(getBaseContext());
+                helper.insertNewCategory(getBaseContext(), category);
+            }
+        });
+
+        mBuilder.setNegativeButton("Cancel", null);
+        mBuilder.setView(mview);
+        mBuilder.setTitle("Add New Category");
+        AlertDialog dialog = mBuilder.create();
+        dialog.show();
+    }
+
 
 }

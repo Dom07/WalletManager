@@ -236,7 +236,7 @@ public class Home extends Fragment {
 
                 @Override
                 public void onNothingSelected() {
-
+                    setPieCenterText(null);
                 }
             });
         }
@@ -244,7 +244,7 @@ public class Home extends Fragment {
 
     public void setPieCenterText(Entry e){
         PieEntry pieEntry = (PieEntry)e;
-        pieChart.setCenterText(pieEntry.getLabel()+": "+getResources().getString(R.string.dollar)+" "+pieEntry.getValue());
+        pieChart.setCenterText(pieEntry.getLabel()+":"+getResources().getString(R.string.dollar)+""+pieEntry.getValue());
         pieChart.setCenterTextSize(15f);
         pieChart.setCenterTextColor(Color.BLUE);
     }
