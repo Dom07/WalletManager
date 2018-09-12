@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,9 +29,20 @@ public class ManageCategoriesAdapter extends RecyclerView.Adapter<ManageCategori
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ManageCategoriesAdapter.MyViewHolder holder, int position) {
-        String category = categoriesList.get(position);
+    public void onBindViewHolder(@NonNull ManageCategoriesAdapter.MyViewHolder holder, final int position) {
+        final String category = categoriesList.get(position);
         holder.tvCategoryItem.setText(category);
+
+        holder.ivRemoveCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
+                helper.removeCategory(context, category);
+                categoriesList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, categoriesList.size());
+            }
+        });
     }
 
     @Override
@@ -40,10 +52,12 @@ public class ManageCategoriesAdapter extends RecyclerView.Adapter<ManageCategori
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvCategoryItem;
+        ImageView ivRemoveCategory;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             tvCategoryItem = itemView.findViewById(R.id.tvCategoryItem);
+            ivRemoveCategory = itemView.findViewById(R.id.ivRemoveCategory);
         }
     }
 }

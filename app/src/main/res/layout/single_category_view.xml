@@ -2,24 +2,41 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:layout_margin="5dp">
+    android:layout_height="65dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
 
-    <android.support.v7.widget.CardView
-        android:layout_centerVertical="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="5dp">
 
-        <TextView
-            android:layout_marginLeft="20dp"
+        <android.support.v7.widget.CardView
             android:layout_centerVertical="true"
-            android:text="Item1"
-            android:textSize="20sp"
-            android:id="@+id/tvCategoryItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:elevation="5dp">
 
-    </android.support.v7.widget.CardView>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:text="Item1"
+                        android:textSize="20sp"
+                        android:id="@+id/tvCategoryItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/ivRemoveCategory"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_delete_24dp"/>
+
+                </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 </RelativeLayout>

@@ -11,6 +11,6 @@
         android:id="@+id/action_add_category"
         android:title="Add Category"
         android:icon="@drawable/ic_add_new_category_24dp"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>

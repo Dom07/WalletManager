@@ -5,11 +5,48 @@
     android:layout_height="match_parent"
     tools:context=".ManageCategories">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvCategories"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:layout_alignParentTop="true"
+            android:id="@+id/rvCategories"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <!--RelativeLayout
+                android:id="@+id/rlAddCategoryBar"
+                android:background="@color/colorWhite"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:layout_toLeftOf="@id/ivAddCategory"
+                    android:layout_marginRight="5dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:hint="Add New Category"
+                    android:textSize="20sp"
+                    android:id="@+id/etCategoryItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/ivAddCategory"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_add_box_grey_24dp"/>
+
+            </RelativeLayout-->
+
+    </RelativeLayout>
 
 </FrameLayout>
