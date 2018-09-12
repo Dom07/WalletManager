@@ -1,5 +1,6 @@
 package com.dom5230.utility.walletmanager;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -8,6 +9,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -160,6 +162,7 @@ public class MainActivity extends AppCompatActivity
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mview = getLayoutInflater().inflate(R.layout.dialogue_add_new_category,null);
 
+
         final EditText etAddNewCategory = mview.findViewById(R.id.etNewCategory);
 
         mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -168,6 +171,7 @@ public class MainActivity extends AppCompatActivity
                 String category = etAddNewCategory.getText().toString().trim();
                 MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(getBaseContext());
                 helper.insertNewCategory(getBaseContext(), category);
+                android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             }
         });
 
