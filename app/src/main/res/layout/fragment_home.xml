@@ -106,7 +106,30 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp">
 
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/layour2_component1"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+
+                    <Spinner
+                        android:id="@+id/spinnerGraphCategory"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp">
+                    </Spinner>
+
+                    <!--Button
+                        android:id="@+id/btnUpdateGraphData"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Go" /-->
+                </RelativeLayout>
+
                 <com.github.mikephil.charting.charts.PieChart
+                    android:layout_below="@id/layour2_component1"
                     android:layout_centerInParent="true"
                     android:id="@+id/piechart"
                     android:layout_width="350dp"

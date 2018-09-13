@@ -155,7 +155,7 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         sqliteTaskHelperInstance = MySqliteTaskHelper.getInstance(context);
         db = sqliteTaskHelperInstance.getReadableDatabase();
         float total = 0;
-        String TodaysDate = getTodaysDate();
+        String TodaysDate = getTodaysOrYesterdaysDate(0);
         Cursor cursor = db.query(table.TABLE_NAME, new String[]{table.AMOUNT}, table.DATE + "=?", new String[]{TodaysDate}, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -167,12 +167,16 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
     }
 
 
-    public String getTodaysDate() {
+    public String getTodaysOrYesterdaysDate(int i) {
+        String date;
         Calendar calendar = Calendar.getInstance();
+        if(i==1){
+            calendar.add(Calendar.DATE, -1);
+        }
         int day = calendar.get(Calendar.DATE);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
-        String date = day + "/" + month + "/" + year;
+        date = day + "/" + month + "/" + year;
         return date;
     }
 
@@ -209,6 +213,5 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         db.delete(categoryTable.TABLE_NAME, categoryTable.CATEGORY+"=?", new String[]{categoryName});
         db.close();
     }
-
 
 }

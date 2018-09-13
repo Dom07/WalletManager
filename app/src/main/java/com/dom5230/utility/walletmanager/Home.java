@@ -16,12 +16,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +54,7 @@ public class Home extends Fragment {
     TextView SpendingsForToday;
     TextView averageSpendings;
     PieChart pieChart;
+    Spinner spinnerGraphCategory;
 
     View view;
 
@@ -73,7 +76,26 @@ public class Home extends Fragment {
         SpendingsForToday = view.findViewById(R.id.SpendingsForToday);
         lvLastFiveTransactions = view.findViewById(R.id.LVLastFiveTransacctions);
         pieChart = view.findViewById(R.id.piechart);
+        spinnerGraphCategory = view.findViewById(R.id.spinnerGraphCategory);
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.GraphCategory, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGraphCategory.setAdapter(adapter);
+
+        spinnerGraphCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String timeLine = spinnerGraphCategory.getSelectedItem().toString();
+                setPieChart(timeLine);
+                pieChart.notifyDataSetChanged();
+                pieChart.invalidate();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 //      Executed when the app runs for the first time
         if(checkFirstRun){
             firstRun();
@@ -170,7 +192,7 @@ public class Home extends Fragment {
     }
 
     private  void updateUIData(){
-        setPieChart();
+        setPieChart("Today");
         updateTodaysExpense();
         updateAverageSalary();
     }
@@ -203,11 +225,12 @@ public class Home extends Fragment {
         averageSpendings.setText(getResources().getString(R.string.dollar)+" "+average);
     }
 
-    public void setPieChart(){
+    public void setPieChart(String timeLine){
         MyPieChart pie = new MyPieChart(getContext());
 
-        ArrayList<PieEntry> yvalues = pie.preparePieData();
+        ArrayList<PieEntry> yvalues = pie.preparePieData(timeLine);
 
+//        spinnerGraphCategory.getSelectedItem().toString()
         if(yvalues.size() != 0) {
             Log.i("YValues", String.valueOf(yvalues.size()));
             PieDataSet dataSet = new PieDataSet(yvalues, "Category");

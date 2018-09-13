@@ -10,11 +10,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dollar">$</string>
 
-    <string-array name="category">
-        <item>Food</item>
-        <item>Travel</item>
-        <item>Bills</item>
-        <item>Shopping</item>
-        <item>Entertainment</item>
+    <string-array name="GraphCategory">
+        <item>Today</item>
+        <item>Yesterday</item>
+        <item>Last Week</item>
+        <item>All Time</item>
     </string-array>
 </resources>
