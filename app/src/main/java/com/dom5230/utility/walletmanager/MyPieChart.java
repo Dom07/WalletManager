@@ -105,20 +105,6 @@ public class MyPieChart {
         return total;
     }
 
-//    Month and Days
-//    1 - 31
-//    2 - 28
-//    3 - 31
-//    4 - 30
-//    5 - 31
-//    6 - 30
-//    7 - 31
-//    8 - 31
-//    9 - 30
-//    10 - 31
-//    11 - 30
-//    12 - 31
-
     public String[] prepareSevenDayDates(String date){
         String[] tempDates = new String[7];
         for(int i = 0; i < 7; i++){

@@ -32,31 +32,31 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_marginRight="50dp"
+                android:layout_toLeftOf="@id/splitLine"
                 android:id="@+id/ivRecentTransaction"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="40dp"
                 android:src="@drawable/ic_history_black_24dp"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:onClick="onBottomItemSelected"/>
 
+            <TextView
+                android:id="@+id/splitLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+
             <ImageView
+                android:layout_marginLeft="50dp"
+                android:layout_toRightOf="@id/splitLine"
                 android:id="@+id/ivHome"
                 android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:src="@drawable/ic_home_black_24dp"
                 android:onClick="onBottomItemSelected"/>
 
-            <ImageView
-                android:id="@+id/ivAssessment"
-                android:layout_marginRight="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_assessment_black_24dp"
-                android:onClick="onBottomItemSelected"/>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

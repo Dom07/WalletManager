@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,14 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +83,7 @@ public class Home extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String timeLine = spinnerGraphCategory.getSelectedItem().toString();
+                pieChart.clear();
                 setPieChart(timeLine);
                 pieChart.notifyDataSetChanged();
                 pieChart.invalidate();
@@ -96,6 +94,7 @@ public class Home extends Fragment {
 
             }
         });
+
 //      Executed when the app runs for the first time
         if(checkFirstRun){
             firstRun();
@@ -104,16 +103,13 @@ public class Home extends Fragment {
 
 //      Setting Up the ui components
         updateUIData();
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 expenseAlertBox();
             }
         });
-
         populateListView();
-
         return view;
     }
 
@@ -156,7 +152,6 @@ public class Home extends Fragment {
                 }
                 populateListView();
                 updateUIData();
-                //helper.insertNewCategory(getContext(), "Utilities");
             }
         });
 
@@ -171,8 +166,6 @@ public class Home extends Fragment {
         items = helper.getRecentTwoRows(getContext());
         recentTransactionAdapter recentTransactionAdapter = new recentTransactionAdapter(getActivity(), items);
         lvLastFiveTransactions.setAdapter(recentTransactionAdapter);
-//        historyAdapter = new TransactionHistoryAdapter(getActivity(), items);
-//        lvLastFiveTransactions.setAdapter(historyAdapter);
         if(!recentTransactionAdapter.isEmpty()){
             lvLastFiveTransactions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -230,7 +223,6 @@ public class Home extends Fragment {
 
         ArrayList<PieEntry> yvalues = pie.preparePieData(timeLine);
 
-//        spinnerGraphCategory.getSelectedItem().toString()
         if(yvalues.size() != 0) {
             Log.i("YValues", String.valueOf(yvalues.size()));
             PieDataSet dataSet = new PieDataSet(yvalues, "Category");

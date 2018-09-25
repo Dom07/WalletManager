@@ -34,14 +34,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        NavigationView navigationView = findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -68,20 +68,13 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
-            case R.id.action_add_category: {
-                break;
-            }
-            case R.id.action_manage_categories:{
+        if (id == R.id.action_manage_categories){
                 android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, new ManageCategories());
                 ft.commit();
                 ft.addToBackStack("Manage Categories");
                 updateBottomMenu(3);
-                break;
             }
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -130,15 +123,6 @@ public class MainActivity extends AppCompatActivity
                 updateBottomMenu(1);
                 break;
             }
-
-            case R.id.ivAssessment:{
-                android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                AssessmentFragment assessmentFragment = new AssessmentFragment();
-                ft.replace(R.id.content_frame, assessmentFragment);
-                ft.commit();
-                updateBottomMenu(2);
-                break;
-            }
         }
         return true;
     }
@@ -146,21 +130,14 @@ public class MainActivity extends AppCompatActivity
     public void updateBottomMenu(int position){
         ImageView ivRecentTransaction = findViewById(R.id.ivRecentTransaction);
         ImageView ivHome = findViewById(R.id.ivHome);
-        ImageView ivAssessment = findViewById(R.id.ivAssessment);
 
         if(position == 0){
             ivRecentTransaction.setImageResource(R.drawable.ic_history_highlighted_24dp);
             ivHome.setImageResource(R.drawable.ic_home_black_24dp);
-            ivAssessment.setImageResource(R.drawable.ic_assessment_black_24dp);
         } else if (position == 1){
             ivHome.setImageResource(R.drawable.ic_home_highlighted_24dp);
             ivRecentTransaction.setImageResource(R.drawable.ic_history_black_24dp);
-            ivAssessment.setImageResource(R.drawable.ic_assessment_black_24dp);
-        } else if(position == 2){
-            ivHome.setImageResource(R.drawable.ic_home_black_24dp);
-            ivRecentTransaction.setImageResource(R.drawable.ic_history_black_24dp);
-            ivAssessment.setImageResource(R.drawable.ic_assessment_highlighted_24dp);
-        } else{
+        }else{
 
         }
     }
