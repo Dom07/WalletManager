@@ -36,15 +36,7 @@ public class recentTransactionAdapter extends ArrayAdapter {
 
         tvCategory.setText(transactionRecorditem.getCategory());
         tvDescription.setText(transactionRecorditem.getDescription());
-        tvAmount.setText(getContext().getResources().getString(R.string.dollar)+" "+transactionRecorditem.getAmouont());
-
-//        tvRecentAmount = rowView.findViewById(R.id.tvRecentAmount);
-//        tvRecentCategory = rowView.findViewById(R.id.tvRecentCategory);
-//        tvRecentDate = rowView.findViewById(R.id.tvRecentDate);
-//
-//        tvRecentCategory.setText(transactionRecorditem.getCategory());
-//        tvRecentDate.setText(transactionRecorditem.getDate());
-//        tvRecentAmount.setText("Rs."+transactionRecorditem.getAmouont());
+        tvAmount.setText(getContext().getResources().getString(R.string.rupees)+" "+transactionRecorditem.getAmouont());
 
         return rowView;
     }

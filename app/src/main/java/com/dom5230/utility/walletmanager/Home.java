@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +60,6 @@ public class Home extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         sharedPreferences = getActivity().getSharedPreferences("com.dom5230.utility.walletmanager", Context.MODE_PRIVATE);
         Boolean checkFirstRun = sharedPreferences.getBoolean("FirstRun", true);
-        Log.i("First Run:",String.valueOf(checkFirstRun));
 
 //      Objects
         helper = MySqliteTaskHelper.getInstance(getContext());
@@ -198,7 +196,7 @@ public class Home extends Fragment {
         }
         DecimalFormat df = new DecimalFormat("0.00");
         expsesForToday = Float.parseFloat(df.format(expsesForToday));
-        SpendingsForToday.setText(getResources().getString(R.string.dollar)+" "+expsesForToday);
+        SpendingsForToday.setText(getResources().getString(R.string.rupees)+" "+expsesForToday);
     }
 
     public void updateAverageSalary(){
@@ -215,7 +213,7 @@ public class Home extends Fragment {
             DecimalFormat df = new DecimalFormat("0.00");
             average = Double.parseDouble(df.format(average));
         }
-        averageSpendings.setText(getResources().getString(R.string.dollar)+" "+average);
+        averageSpendings.setText(getResources().getString(R.string.rupees)+" "+average);
     }
 
     public void setPieChart(String timeLine){
@@ -224,7 +222,6 @@ public class Home extends Fragment {
         ArrayList<PieEntry> yvalues = pie.preparePieData(timeLine);
 
         if(yvalues.size() != 0) {
-            Log.i("YValues", String.valueOf(yvalues.size()));
             PieDataSet dataSet = new PieDataSet(yvalues, "Category");
             dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
@@ -259,7 +256,7 @@ public class Home extends Fragment {
 
     public void setPieCenterText(Entry e){
         PieEntry pieEntry = (PieEntry)e;
-        pieChart.setCenterText(pieEntry.getLabel()+":"+getResources().getString(R.string.dollar)+""+pieEntry.getValue());
+        pieChart.setCenterText(pieEntry.getLabel()+":"+getResources().getString(R.string.rupees)+""+pieEntry.getValue());
         pieChart.setCenterTextSize(15f);
         pieChart.setCenterTextColor(Color.BLUE);
     }

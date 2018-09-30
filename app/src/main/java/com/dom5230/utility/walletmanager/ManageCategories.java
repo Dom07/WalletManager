@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +45,6 @@ public class ManageCategories extends Fragment {
         helper = MySqliteTaskHelper.getInstance(getContext());
 
         categoriesList = helper.getCategoriesList(getContext());
-        Log.d("Categories List", String.valueOf(categoriesList));
 
         adapter = new ManageCategoriesAdapter(getContext(), categoriesList);
         updateRecyclerView(view);
@@ -91,7 +89,7 @@ public class ManageCategories extends Fragment {
         mBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String category = etAddNewCategory.getText().toString().trim();
+                String category = etAddNewCategory.getText().toString().trim().toUpperCase();
                 MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(getContext());
                 helper.insertNewCategory(getContext(), category);
                 categoriesList.add(category);

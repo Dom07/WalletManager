@@ -4,15 +4,11 @@ package com.dom5230.utility.walletmanager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -71,6 +67,4 @@ public class TransactionHistory extends Fragment {
             tvNoData.setVisibility(View.INVISIBLE);
         }
     }
-
-
 }

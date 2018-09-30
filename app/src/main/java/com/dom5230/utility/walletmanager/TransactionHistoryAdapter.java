@@ -1,7 +1,6 @@
 package com.dom5230.utility.walletmanager;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +32,6 @@ public class TransactionHistoryAdapter extends ArrayAdapter {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.last_two_transaction_row,null,true);
 
-//        tvDate = rowView.findViewById(R.id.tvDate);
-//        tvDay = rowView.findViewById(R.id.tvDay);
-//        tvTotalAmount = rowView.findViewById(R.id.tvTotal);
-//        lvTransactionPerDay = rowView.findViewById(R.id.lvPerDayList);
-
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
         ArrayList<TransactionRecord> transactionRecordItems = helper.getRowsAsArrayListObjects(context);
 
@@ -49,24 +43,9 @@ public class TransactionHistoryAdapter extends ArrayAdapter {
                 transactionRecordPerDay.add(record);
             }
         }
-        Log.d("Record Size: ", String.valueOf(transactionRecordPerDay.size()));
         tvDate.setText(String.valueOf(dates.get(position)));
         TransactionPerDayItemAdapter transactionPerDayItemAdapter = new TransactionPerDayItemAdapter(context, transactionRecordPerDay, dates.get(position));
         lvTransactionPerDay.setAdapter(transactionPerDayItemAdapter);
-
-
-//        tvTransactionAmount = rowView.findViewById(R.id.tvTransactionAmount);
-//        tvTransactionDate = rowView.findViewById(R.id.TVTransactionDate);
-//        tvTransactionTime = rowView.findViewById(R.id.TVTransactionTime);
-//        tvTransactionDayofWeek = rowView.findViewById(R.id.TVDayOfWeek);
-//        tvTransactionCategory = rowView.findViewById(R.id.tvTransactionCategory);
-//
-//        tvTransactionDate.setText(transactionRecord.getDate());
-//        tvTransactionTime.setText(transactionRecord.getTime());
-//        tvTransactionDayofWeek.setText(transactionRecord.getDayOfWeek());
-//        tvTransactionCategory.setText(transactionRecord.getCategory());
-//        tvTransactionAmount.setText("₹"+transactionRecord.getAmouont());
-
         return rowView;
     }
 }

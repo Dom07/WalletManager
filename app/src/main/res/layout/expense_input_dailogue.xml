@@ -19,7 +19,7 @@
             android:textColor="@color/colorBlack"/>
 
         <EditText
-            android:hint="$0.00"
+            android:hint="₹0.00"
             android:textAlignment="viewEnd"
             android:gravity="right"
             android:textSize="25sp"

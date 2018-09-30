@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,13 +49,12 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
     public void insertCategories(Context context) {
         MySqliteTaskHelper helper = MySqliteTaskHelper.getInstance(context);
         SQLiteDatabase db = helper.getWritableDatabase();
-        String[] categories = new String[]{"Food", "Bills", "Travel", "Shopping", "Entertainment"};
+        String[] categories = new String[]{"FOOD", "BILLS", "TRAVEL", "SHOPPING", "ENTERTAINMENT"};
         ContentValues values = new ContentValues();
         for (int i = 0; i < categories.length; i++) {
             values.put(categoryTable.CATEGORY, categories[i]);
             long row = db.insert(categoryTable.TABLE_NAME, null, values);
             values.clear();
-            Log.i("Categories row:", String.valueOf(row));
         }
     }
 
@@ -65,9 +63,8 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(categoryTable.CATEGORY, categoryName);
-        long row = db.insert(categoryTable.TABLE_NAME, null, values);
+        db.insert(categoryTable.TABLE_NAME, null, values);
         values.clear();
-        Log.d("New Category Added:", categoryName);
     }
 
     public void insertRecord(Context context, String amount, String category, String description) {
@@ -94,7 +91,6 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         values.put(table.AMOUNT, amount);
         values.put(table.DESCRIPTION, description);
         long row = db.insert(table.TABLE_NAME, null, values);
-        Log.i("SQL INSERT", String.valueOf(row));
     }
 
     //  Fetch data queries here
@@ -213,6 +209,4 @@ public class MySqliteTaskHelper extends SQLiteOpenHelper {
         db.delete(categoryTable.TABLE_NAME, categoryTable.CATEGORY+"=?", new String[]{categoryName});
         db.close();
     }
-
-
 }
