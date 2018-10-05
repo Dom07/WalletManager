@@ -248,7 +248,7 @@ public class Home extends Fragment {
 
                 @Override
                 public void onNothingSelected() {
-                    setPieCenterText(null);
+                    pieChart.setCenterText(" ");
                 }
             });
         }
