@@ -5,9 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.tappx.sdk.android.TappxBanner;
+import com.tappx.sdk.android.TappxInterstitial;
+
 public class MainActivity extends AppCompatActivity {
+    TappxBanner tappxBanner;
+    ViewGroup bannerContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +27,21 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        bannerContainer = findViewById(R.id.tappx_banner);
+        tappxBanner = new TappxBanner(getBaseContext(), "Pub-43395-Android-4870");
+//        tappxBanner.setAdSize(TappxBanner.AdSize.BANNER_320x50);
+        tappxBanner.setAdSize(TappxBanner.AdSize.SMART_BANNER);
+        bannerContainer.addView(tappxBanner);
+        tappxBanner.loadAd();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(tappxBanner!=null){
+            tappxBanner.destroy();
+        }
     }
 
     @Override
