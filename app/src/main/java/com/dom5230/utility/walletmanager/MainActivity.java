@@ -1,4 +1,6 @@
 package com.dom5230.utility.walletmanager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.tappx.sdk.android.TappxBanner;
-import com.tappx.sdk.android.TappxInterstitial;
+
+import java.net.URI;
 
 public class MainActivity extends AppCompatActivity {
     TappxBanner tappxBanner;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         tappxBanner.setAdSize(TappxBanner.AdSize.SMART_BANNER);
         bannerContainer.addView(tappxBanner);
         tappxBanner.loadAd();
+        tappxBanner.setRefreshTimeSeconds(30);
     }
 
     @Override
@@ -55,13 +58,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_manage_categories){
+        switch(id){
+            case R.id.action_manage_categories:{
                 android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, new ManageCategories());
                 ft.commit();
                 ft.addToBackStack("Manage Categories");
                 updateBottomMenu(3);
+                break;
             }
+
+            case R.id.menu_privacy_policy:{
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ergonomic-spoons.000webhostapp.com/privacy_policy.html"));
+                startActivity(browserIntent);
+                break;
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 

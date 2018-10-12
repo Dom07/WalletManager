@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_manage_categories"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="Manage Categories"
         app:showAsAction="never" />
+
+    <item android:id="@+id/menu_privacy_policy"
+        android:title="Privacy Policy"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
 </menu>
