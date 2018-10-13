@@ -19,7 +19,6 @@
             android:textColor="@color/colorBlack"/>
 
         <EditText
-            android:hint="₹0.00"
             android:textAlignment="viewEnd"
             android:gravity="right"
             android:textSize="25sp"
@@ -47,7 +46,7 @@
 
         <Spinner
             android:id="@+id/SpinnerCategory"
-            android:layout_width="120dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="1dp" />

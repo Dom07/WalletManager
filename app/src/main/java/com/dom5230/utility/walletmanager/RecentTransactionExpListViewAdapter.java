@@ -15,6 +15,7 @@ public class RecentTransactionExpListViewAdapter extends BaseExpandableListAdapt
     ArrayList<String> dates;
     HashMap<String, ArrayList<TransactionRecord>> items;
     Context context;
+    String currency = MainActivity.getCurrency();
 
     public RecentTransactionExpListViewAdapter(Context context, ArrayList<String> dates, HashMap<String, ArrayList<TransactionRecord>> items){
         this.context = context;
@@ -74,7 +75,7 @@ public class RecentTransactionExpListViewAdapter extends BaseExpandableListAdapt
         transactionDay.setText(record.getDayOfWeek());
         DecimalFormat df = new DecimalFormat("0.00");
         Float formattedValue = Float.valueOf(df.format(getTotalAmount(records)));
-        transactionTotalAmount.setText(context.getResources().getString(R.string.rupees)+" "+String.valueOf(formattedValue));
+        transactionTotalAmount.setText(currency+" "+String.valueOf(formattedValue));
         return view;
     }
 
@@ -95,7 +96,7 @@ public class RecentTransactionExpListViewAdapter extends BaseExpandableListAdapt
         transactionCategory.setText(record.getCategory());
         transactionTime.setText(record.getTimeInAmPmFormat());
         transactionDescription.setText(record.getDescription());
-        transactionAmount.setText(context.getResources().getString(R.string.rupees)+" "+record.getAmouont());
+        transactionAmount.setText(currency+" "+record.getAmouont());
         return view;
     }
 

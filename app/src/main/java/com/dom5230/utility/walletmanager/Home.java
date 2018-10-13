@@ -40,8 +40,7 @@ public class Home extends Fragment {
 
     // Objects
     MySqliteTaskHelper helper;
-    TransactionHistoryAdapter historyAdapter;
-    ArrayList<TransactionRecord> items;
+   ArrayList<TransactionRecord> items;
     SharedPreferences sharedPreferences;
 
     // UI Components
@@ -51,7 +50,7 @@ public class Home extends Fragment {
     TextView averageSpendings;
     PieChart pieChart;
     Spinner spinnerGraphCategory;
-
+    String currency  = MainActivity.getCurrency();
     View view;
 
     @Nullable
@@ -114,6 +113,7 @@ public class Home extends Fragment {
     public void firstRun(){
         sharedPreferences = getActivity().getSharedPreferences("com.dom5230.utility.walletmanager", Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("FirstRun",false).commit();
+        MainActivity.setCurrency();
     }
 
     public void expenseAlertBox(){
@@ -121,9 +121,11 @@ public class Home extends Fragment {
         View mview = getLayoutInflater().inflate(R.layout.expense_input_dailogue,null);
 
         final EditText ETAmount = mview.findViewById(R.id.ETAmount);
+        ETAmount.setHint(currency+"0.00");
         final Spinner spinner = mview.findViewById(R.id.SpinnerCategory);
         final EditText ETDescription = mview.findViewById(R.id.etDescription);
         TextView tvDescriptionCounter = mview.findViewById(R.id.tvDescriptionCount);
+
 
         updateDescriptionCount(ETDescription, tvDescriptionCounter);
 
@@ -196,7 +198,7 @@ public class Home extends Fragment {
         }
         DecimalFormat df = new DecimalFormat("0.00");
         expsesForToday = Float.parseFloat(df.format(expsesForToday));
-        SpendingsForToday.setText(getResources().getString(R.string.rupees)+" "+expsesForToday);
+        SpendingsForToday.setText(currency+" "+expsesForToday);
     }
 
     public void updateAverageSalary(){
@@ -213,7 +215,7 @@ public class Home extends Fragment {
             DecimalFormat df = new DecimalFormat("0.00");
             average = Double.parseDouble(df.format(average));
         }
-        averageSpendings.setText(getResources().getString(R.string.rupees)+" "+average);
+        averageSpendings.setText(currency+" "+average);
     }
 
     public void setPieChart(String timeLine){
@@ -256,7 +258,7 @@ public class Home extends Fragment {
 
     public void setPieCenterText(Entry e){
         PieEntry pieEntry = (PieEntry)e;
-        pieChart.setCenterText(pieEntry.getLabel()+":"+getResources().getString(R.string.rupees)+""+pieEntry.getValue());
+        pieChart.setCenterText(pieEntry.getLabel()+":"+currency+""+pieEntry.getValue());
         pieChart.setCenterTextSize(15f);
         pieChart.setCenterTextColor(Color.BLUE);
     }

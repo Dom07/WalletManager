@@ -16,6 +16,7 @@ public class recentTransactionAdapter extends ArrayAdapter {
     ArrayList<TransactionRecord> transactionRecorditems;
     TextView tvCategory, tvDescription, tvAmount;
     TransactionRecord transactionRecorditem;
+    String currency = MainActivity.getCurrency();
 
     public recentTransactionAdapter(Activity context, ArrayList<TransactionRecord> transactionRecorditems){
         super(context, R.layout.recent_transaction_row, transactionRecorditems);
@@ -36,7 +37,7 @@ public class recentTransactionAdapter extends ArrayAdapter {
 
         tvCategory.setText(transactionRecorditem.getCategory());
         tvDescription.setText(transactionRecorditem.getDescription());
-        tvAmount.setText(getContext().getResources().getString(R.string.rupees)+" "+transactionRecorditem.getAmouont());
+        tvAmount.setText(currency+" "+transactionRecorditem.getAmouont());
 
         return rowView;
     }
